@@ -33,11 +33,7 @@
   border-radius: 0;
   border: none;
   padding: 0.75rem 1.25rem;
-<<<<<<< HEAD
-  transition: background-color 0.3s ease, color 0.3s ease, padding-left 0.3s ease;
-=======
   transition: background-color 0.3s ease, color 0.3s ease;
->>>>>>> 7c93bb5d2d1834a6cf4158b7b849b8a3f31b035c
   background: rgba(0, 0, 0, 0.03);
 }
 
@@ -49,8 +45,6 @@
 
 .list-group-item:hover {
   background-color: rgba(0, 0, 0, 0.05);
-<<<<<<< HEAD
-=======
 }
 
 .btn-toggle {
@@ -69,7 +63,6 @@
 .btn-toggle:hover {
   background-color: #007bff;
   color: white;
->>>>>>> 7c93bb5d2d1834a6cf4158b7b849b8a3f31b035c
 }
 
 @media (max-width: 768px) {
@@ -81,47 +74,8 @@
     transform: translateX(-100%);
   }
 
-<<<<<<< HEAD
-  #sidebar-wrapper.show {
-    transform: translateX(0);
-  }
-
-=======
->>>>>>> 7c93bb5d2d1834a6cf4158b7b849b8a3f31b035c
   .btn-toggle {
     top: 1rem;
     left: 1rem;
-<<<<<<< HEAD
-    z-index: 101;
-    background: rgba(0, 0, 0, 0.1);
-    border: 2px solid #007bff;
-    color: #007bff;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  .btn-toggle:hover {
-    background-color: #007bff;
-    color: white;
   }
 }
-
-@media (min-width: 769px) {
-  #sidebar-wrapper {
-    width: 250px;
-    height: 100vh;
-    position: fixed;
-    transform: translateX(0);
-  }
-}
-
-.content-wrapper {
-  margin-left: 250px; /* This ensures the content is pushed to the right by the width of the sidebar */
-  padding: 20px;
-  flex-grow: 1;
-}
-=======
-  }
-}
->>>>>>> 7c93bb5d2d1834a6cf4158b7b849b8a3f31b035c
