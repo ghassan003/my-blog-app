@@ -1,9 +1,7 @@
-// src/Dashboard.js
 import React, { useEffect, useState } from 'react';
 import SideNav from './SideNav';
-import DashboardCards from './DashboardCards';
+import DashboardCards from './DashboardCards'; // Import the new DashboardCards component
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles.css'; // Import the CSS file
 
 const Dashboard = () => {
   const [totalPosts, setTotalPosts] = useState(0);
@@ -23,7 +21,7 @@ const Dashboard = () => {
   return (
     <div className="d-flex">
       <SideNav />
-      <div className="content-wrapper">
+      <div className="container mt-5">
         <h2>Welcome to the Dashboard</h2>
         <p>This is the protected area of the application.</p>
         <DashboardCards 

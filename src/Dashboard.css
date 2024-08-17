@@ -1,0 +1,10 @@
+.container {
+    margin-left: 270px; /* Ensure it is slightly more than SideNav width to avoid overlap */
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      margin-left: 0;
+    }
+  }
+  

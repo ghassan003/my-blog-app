@@ -1,3 +1,4 @@
+/* src/styles.css */
 #sidebar-wrapper {
   width: 250px;
   height: 100vh;
@@ -80,7 +81,7 @@
 }
 
 .content-wrapper {
-  margin-left: 250px; /* This ensures the content is pushed to the right by the width of the sidebar */
+  margin-left: 250px;
   padding: 20px;
   flex-grow: 1;
 }

@@ -1,3 +1,4 @@
+// src/LoginPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +10,7 @@ const LoginPage = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     if (email === 'admin@admin.com' && password === 'admin@12345') {
+      localStorage.setItem('authToken', 'your-token'); // Set token or any other auth data
       navigate('/dashboard');
     } else {
       alert('Invalid credentials. Please try again.');
