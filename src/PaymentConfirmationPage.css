@@ -1,0 +1,13 @@
+/* PaymentConfirmationPage.css */
+.container {
+    margin-top: 20px;
+  }
+  
+  .table {
+    width: 100%;
+  }
+  
+  .table th, .table td {
+    text-align: left;
+  }
+  

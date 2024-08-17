@@ -1,0 +1,17 @@
+.layout-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px; /* Adjust as needed */
+    flex-shrink: 0; /* Prevents the sidebar from shrinking */
+    background-color: #E0E0E0; /* Background color to match the rest of the app */
+  }
+  
+  .main-content {
+    flex-grow: 1; /* This will take up the remaining space */
+    padding: 20px; /* Adjust the padding as needed */
+    background-color: #f8f9fa; /* Optional: gives a light background to the main content */
+  }
+  

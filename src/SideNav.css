@@ -1,0 +1,105 @@
+/* src/SideNav.css */
+#sidebar-wrapper {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-color: #f8f9fa; /* Light gray background for a modern look */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sidebar-heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 1rem;
+  background-color: #007bff; /* Primary color for the heading */
+  color: white;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.list-group-item {
+  border-radius: 0;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease, padding-left 0.3s ease;
+  background: rgba(0, 0, 0, 0.03); /* Semi-transparent background */
+}
+
+.list-group-item.active {
+  background-color: rgba(0, 123, 255, 0.1); /* Slightly transparent active color */
+  color: #007bff;
+  font-weight: bold;
+}
+
+.list-group-item:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Light gray hover effect */
+}
+
+@media (max-width: 768px) {
+  #sidebar-wrapper {
+    width: 250px;
+    height: auto;
+    position: fixed;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  #sidebar-wrapper.show {
+    transform: translateX(0);
+  }
+  
+  .btn-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 101;
+    background: rgba(0, 0, 0, 0.1); /* Semi-transparent background */
+    border: 2px solid #007bff;
+    color: #007bff;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .btn-toggle:hover {
+    background-color: #007bff;
+    color: white;
+  }
+}
+
+@media (min-width: 769px) {
+  #sidebar-wrapper {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    transform: translateX(0);
+  }
+}
+
+
+
+
+/* Add styles for the sidebar */
+#sidebar-wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Ensure the sidebar is on top */
+  height: 100%;
+  width: 250px; /* Adjust width as needed */
+  background-color: #f8f9fa; /* Background color of sidebar */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  overflow-y: auto; /* Scrollable if content overflows */
+}
+
+/* Styles for main content area */
+.content-wrapper {
+  margin-left: 250px; /* Match the sidebar width */
+  padding: 20px;
+  flex-grow: 1;
+}

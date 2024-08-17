@@ -1,0 +1,36 @@
+.app-container {
+    display: flex;
+  }
+  
+  #sidebar-wrapper {
+    width: 250px; /* Adjust width as needed */
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  
+  .main-content {
+    margin-left: 250px; /* Same as sidebar width */
+    padding: 20px;
+    width: calc(100% - 250px);
+  }
+  
+  .table img {
+    width: 50px; /* Adjust size as needed */
+    height: auto;
+  }
+  
+  .btn-toggle {
+    margin: 10px;
+  }
+  
+  .bg-light {
+    background-color: #f8f9fa;
+  }
+  
+  .border-end {
+    border-right: 1px solid #dee2e6;
+  }
+  
