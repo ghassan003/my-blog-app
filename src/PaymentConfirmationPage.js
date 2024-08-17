@@ -5,6 +5,9 @@ import { toast } from 'react-toastify';
 import PaymentForm from './PaymentForm'; // Import PaymentForm component
 import { Modal, Button } from 'react-bootstrap'; // Import React-Bootstrap components
 import SideNav from './SideNav'; // Import SideNav component
+import CountdownLoader from './CountdownLoader'; // Import CountdownLoader component
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './PaymentConfirmationPage.css'; // Import custom CSS
 
 const PaymentConfirmationPage = () => {
   const [payments, setPayments] = useState([]);
@@ -72,7 +75,7 @@ const PaymentConfirmationPage = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <CountdownLoader />; // Show loader while loading
 
   return (
     <div className="d-flex">
@@ -82,39 +85,41 @@ const PaymentConfirmationPage = () => {
         <Button className="btn btn-success mb-3" onClick={handleShowAddForm}>
           Add New Payment
         </Button>
-        <table className="table table-striped mt-4">
-          <thead>
-            <tr>
-              <th>Deposited By</th>
-              <th>Transaction Reference Number</th>
-              <th>Date</th>
-              <th>Bank Name</th>
-              <th>Bank Branch</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {payments.map((payment) => (
-              <tr key={payment.id}>
-                <td>{payment.depositedBy}</td>
-                <td>{payment.transactionRef}</td>
-                <td>{payment.date ? new Date(payment.date).toLocaleDateString() : 'N/A'}</td>
-                <td>{payment.bankName}</td> {/* Bank Name column */}
-                <td>{payment.bankBranch}</td> {/* Bank Branch column */}
-                <td>
-                  <select
-                    className="form-select"
-                    value={payment.status || 'Pending'}
-                    onChange={(e) => handlePaymentStatusChange(payment.id, e.target.value)}
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="Received">Received</option>
-                  </select>
-                </td>
+        <div className="table-responsive">
+          <table className="table table-bordered table-striped mt-4">
+            <thead>
+              <tr>
+                <th>Deposited By</th>
+                <th>Transaction Reference Number</th>
+                <th>Date</th>
+                <th>Bank Name</th>
+                <th>Bank Branch</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {payments.map((payment) => (
+                <tr key={payment.id}>
+                  <td>{payment.depositedBy}</td>
+                  <td>{payment.transactionRef}</td>
+                  <td>{payment.date ? new Date(payment.date).toLocaleDateString() : 'N/A'}</td>
+                  <td>{payment.bankName}</td> {/* Bank Name column */}
+                  <td>{payment.bankBranch}</td> {/* Bank Branch column */}
+                  <td>
+                    <select
+                      className="form-select"
+                      value={payment.status || 'Pending'}
+                      onChange={(e) => handlePaymentStatusChange(payment.id, e.target.value)}
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Received">Received</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* Payment Form Modal for Adding New Payment */}
         <Modal show={showAddForm} onHide={handleCloseAddForm}>
@@ -131,4 +136,3 @@ const PaymentConfirmationPage = () => {
 };
 
 export default PaymentConfirmationPage;
- 

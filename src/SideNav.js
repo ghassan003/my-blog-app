@@ -1,3 +1,4 @@
+// src/SideNav.js
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './SideNav.css'; // Ensure CSS is imported
@@ -25,14 +26,20 @@ const SideNav = () => {
         <div className="sidebar-heading">My Blog</div>
         <div className="list-group list-group-flush">
           <Link 
+            to="/dashboard" 
+            className={`list-group-item list-group-item-action ${location.pathname === '/dashboard' ? 'active' : ''}`}
+          >
+            Dashboard
+          </Link>
+          <Link 
             to="/user" 
             className={`list-group-item list-group-item-action ${location.pathname === '/user' ? 'active' : ''}`}
           >
             User
           </Link>
           <Link 
-            to="/" 
-            className={`list-group-item list-group-item-action ${location.pathname === '/' ? 'active' : ''}`}
+            to="/blog"  // Updated to match route for BlogPage
+            className={`list-group-item list-group-item-action ${location.pathname === '/blog' ? 'active' : ''}`}
           >
             View All Posts
           </Link>
