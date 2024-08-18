@@ -1,50 +1,60 @@
 /* src/BlogPostTable.css */
 
+/* General table styling */
 .table th, .table td {
-    padding: 0.5rem; /* Adjust the padding to reduce row height */
-  }
-  
-  .table th {
-    font-size: 0.875rem; /* Adjust font size if needed */
-    background-color: #007bff; /* Set the background color of the header */
-    color: #fff; /* Set the text color in the header */
-    text-align: center; /* Center-align text in header cells */
-  }
-  .post-image {
-    width: 100px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: cover; /* Ensure the image covers the area */
+  padding: 0.5rem; /* Adjust the padding to reduce row height */
 }
 
-  
-  .table td img {
-    max-width: 100px; /* Ensure images are consistently sized */
-    height: auto;
-  }
-  
-  .table td button {
-    margin-right: 0.5rem; /* Adjust spacing between buttons */
-  }
-  
-  /* Set specific widths for columns */
-  .table .title-column {
-    width: 30%; /* Adjust the width as needed */
-  }
-  
-  .table .description-column {
-    width: 40%; /* Adjust the width as needed */
-  }
-  
-  .table .image-column {
-    width: 20%; /* Adjust the width as needed */
-  }
-  
-  .table .actions-column {
-    width: 10%; /* Adjust the width as needed */
-  }
-  
+.table th {
+  font-size: 0.875rem; /* Adjust font size if needed */
+  background-color: #007bff; /* Set the background color of the header */
+  color: #fff; /* Set the text color in the header */
+  text-align: center; /* Center-align text in header cells */
+}
 
-  /* Add this CSS to your stylesheet or CSS module */
+.table td {
+  background-color: #f8f9fa; /* Set the background color for table cells */
+}
+
+/* Add custom color to header cells */
+.table th {
+  background-color: #007bff; /* Header background color */
+  color: #ffffff; /* Header text color */
+}
+
+.post-image {
+  width: 100px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensure the image covers the area */
+}
+
+.table td img {
+  max-width: 100px; /* Ensure images are consistently sized */
+  height: auto;
+}
+
+.table td button {
+  margin-right: 0.5rem; /* Adjust spacing between buttons */
+}
+
+/* Set specific widths for columns */
+.table .title-column {
+  width: 30%; /* Adjust the width as needed */
+}
+
+.table .description-column {
+  width: 40%; /* Adjust the width as needed */
+}
+
+.table .image-column {
+  width: 20%; /* Adjust the width as needed */
+}
+
+.table .actions-column {
+  width: 10%; /* Adjust the width as needed */
+}
+
+/* Add this CSS to your stylesheet or CSS module */
 .table-dark-border {
   border-collapse: collapse;
 }
@@ -54,3 +64,13 @@
   border: 1px solid #333; /* Dark border color */
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .table .title-column,
+  .table .description-column,
+  .table .image-column,
+  .table .actions-column {
+    width: auto; /* Adjust column width for smaller screens */
+    display: block; /* Stack columns vertically */
+  }
+}

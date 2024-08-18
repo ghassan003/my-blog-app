@@ -1,10 +1,8 @@
-// src/Dashboard.js
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 import './Dashboard.css'; // Import the CSS file for styling
 import SideNav from './SideNav';
-import Header from './Header'; // Import the Header component
 import CountdownLoader from './CountdownLoader'; // Import the CountdownLoader component
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
@@ -14,6 +12,7 @@ const Dashboard = () => {
   const [paidUsers, setPaidUsers] = useState(0);
   const [unpaidUsers, setUnpaidUsers] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +35,7 @@ const Dashboard = () => {
         setUnpaidUsers(unpaidCount);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setError('Failed to load data. Please try again later.');
       } finally {
         setLoading(false); // Set loading to false after data fetch
       }
@@ -44,21 +44,23 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  // Display the countdown loader while data is loading
   if (loading) {
     return <CountdownLoader />;
+  }
+
+  if (error) {
+    return <div className="alert alert-danger" role="alert">{error}</div>;
   }
 
   return (
     <div className="d-flex">
       <SideNav />
       <div className="content-wrapper">
-        <Header />
-        <div className="container mt-5">
+         <div className="container mt-5">
           <h2>Dashboard</h2>
           <div className="row">
             {/* Card for Total Posts */}
-            <div className="col-md-4 mb-4">
+            <div className="col-lg-3 col-md-6 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Total Posts</h5>
@@ -67,7 +69,7 @@ const Dashboard = () => {
               </div>
             </div>
             {/* Card for Total Users */}
-            <div className="col-md-4 mb-4">
+            <div className="col-lg-3 col-md-6 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Total Users</h5>
@@ -76,21 +78,21 @@ const Dashboard = () => {
               </div>
             </div>
             {/* Card for Paid and Unpaid Users */}
-            <div className="col-md-4 mb-4">
+            <div className="col-lg-6 mb-4">
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">User Payment Status</h5>
                   <div className="row">
-                    <div className="col-md-6">
-                      <div className="card bg-success text-white mb-3">
+                    <div className="col-12 col-md-6 mb-3">
+                      <div className="card bg-success text-white">
                         <div className="card-body">
                           <h5 className="card-title">Paid Users</h5>
                           <p className="card-text">{paidUsers}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
-                      <div className="card bg-danger text-white mb-3">
+                    <div className="col-12 col-md-6 mb-3">
+                      <div className="card bg-danger text-white">
                         <div className="card-body">
                           <h5 className="card-title">Unpaid Users</h5>
                           <p className="card-text">{unpaidUsers}</p>
