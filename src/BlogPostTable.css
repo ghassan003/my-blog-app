@@ -43,3 +43,14 @@
     width: 10%; /* Adjust the width as needed */
   }
   
+
+  /* Add this CSS to your stylesheet or CSS module */
+.table-dark-border {
+  border-collapse: collapse;
+}
+
+.table-dark-border th,
+.table-dark-border td {
+  border: 1px solid #333; /* Dark border color */
+}
+

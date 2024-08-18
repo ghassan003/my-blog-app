@@ -1,253 +1,289 @@
-// import React, { useState } from 'react';
-// import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-// import { db } from './firebase';
-// import { toast } from 'react-toastify';
-// import DeleteConfirmationModal from './DeleteConfirmationModal'; // Import the modal component
-// import BlogPostModal from './BlogPostModal'; // Import the blog post modal component
-// import './BlogPostTable.css'; // Import the CSS file
+// src/BlogPostTable.js
 
-// const BlogPostTable = ({ posts = [], onEdit }) => { // Default to empty array
-//   const [showDeleteModal, setShowDeleteModal] = useState(false);
-//   const [showBlogModal, setShowBlogModal] = useState(false);
-//   const [postToDelete, setPostToDelete] = useState(null);
-//   const [selectedPost, setSelectedPost] = useState(null);
-//   const [filterCategory, setFilterCategory] = useState(''); // State for category filter
-
-//   const handleDelete = async () => {
-//     if (postToDelete) {
-//       try {
-//         await deleteDoc(doc(db, 'blogPosts', postToDelete));
-//         toast.success('Blog post deleted successfully!');
-//       } catch (error) {
-//         toast.error('Error deleting blog post: ' + error.message);
-//       } finally {
-//         setShowDeleteModal(false);
-//         setPostToDelete(null);
-//       }
-//     }
-//   };
-
-//   const handleToggleVisibility = async (id, visible) => {
-//     try {
-//       await updateDoc(doc(db, 'blogPosts', id), { visible: !visible });
-//       toast.success('Blog post visibility updated!');
-//     } catch (error) {
-//       toast.error('Error updating blog post visibility: ' + error.message);
-//     }
-//   };
-
-//   const handleView = (post) => {
-//     setSelectedPost(post);
-//     setShowBlogModal(true);
-//   };
-
-//   // Ensure posts is an array and handle cases where posts might be undefined or null
-//   // const filteredPosts = (Array.isArray(posts) ? posts : []).filter(post => 
-//   //   filterCategory === '' || post.category === filterCategory
-//   // );
-
-//   return (
-//     <div className="container mt-5">
-//       <h2 className="text-center">Blog Posts</h2>
-
-//       {/* Filter Dropdown */}
-//       <div className="mb-4">
-//         <label htmlFor="categoryFilter" className="form-label">Filter by Category:</label>
-//         <select
-//           id="categoryFilter"
-//           value={filterCategory}
-//           onChange={(e) => setFilterCategory(e.target.value)}
-//           className="form-select"
-//         >
-//           <option value="">All</option>
-//           <option value="News">News</option>
-//           <option value="Activities">Activities</option>
-//           <option value="Partners">Partners</option>
-//           <option value="Gallery">Gallery</option>
-//         </select>
-//       </div>
-
-//       <table className="table table-striped">
-//         <thead>
-//           <tr>
-//             <th className="title-column">Title</th>
-//             <th className="description-column">Description</th>
-//             <th className="image-column">Image</th>
-//             <th className="category-column">Category</th>
-//             <th className="actions-column">Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {filteredPosts.length > 0 ? (
-//             filteredPosts.map((post) => (
-//               <tr key={post.id}>
-//                 <td className="title-column">{post.title}</td>
-//                 <td className="description-column">{post.description}</td>
-//                 <td className="image-column">
-//                   {post.imageUrl && <img src={post.imageUrl} alt="Post" />}
-//                 </td>
-//                 <td className="category-column">{post.category}</td>
-//                 <td className="actions-column">
-//                   <button onClick={() => onEdit(post.id)} className="btn btn-warning btn-sm mr-2">
-//                     Edit
-//                   </button>
-//                   <button 
-//                     onClick={() => { setPostToDelete(post.id); setShowDeleteModal(true); }} 
-//                     className="btn btn-danger btn-sm mr-2"
-//                   >
-//                     Delete
-//                   </button>
-//                   <button 
-//                     onClick={() => handleToggleVisibility(post.id, post.visible)} 
-//                     className="btn btn-info btn-sm mr-2"
-//                   >
-//                     {post.visible ? 'Hide' : 'Show'}
-//                   </button>
-//                   <button 
-//                     onClick={() => handleView(post)} 
-//                     className="btn btn-primary btn-sm"
-//                   >
-//                     View Blog
-//                   </button>
-//                 </td>
-//               </tr>
-//             ))
-//           ) : (
-//             <tr>
-//               <td colSpan="5" className="text-center">No posts available</td>
-//             </tr>
-//           )}
-//         </tbody>
-//       </table>
-
-//       <DeleteConfirmationModal
-//         show={showDeleteModal}
-//         onHide={() => setShowDeleteModal(false)}
-//         onConfirm={handleDelete}
-//       />
-//       <BlogPostModal
-//         show={showBlogModal}
-//         onHide={() => setShowBlogModal(false)}
-//         post={selectedPost}
-//       />
-//     </div>
-//   );
-// };
-
-// export default BlogPostTable;
-
-
-import React, { useState } from 'react';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { db } from './firebase';
-import { toast } from 'react-toastify';
-import DeleteConfirmationModal from './DeleteConfirmationModal'; // Import the modal component
-import BlogPostModal from './BlogPostModal'; // Import the blog post modal component
+import React, { useState, useEffect } from 'react';
+import { doc, updateDoc, deleteDoc, getDocs, collection } from 'firebase/firestore';
+import { db } from './firebase'; // Import your Firebase configuration
+import { Modal, Button, Form, Spinner } from 'react-bootstrap'; // Import Modal, Button, and Spinner from react-bootstrap
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from './firebase'; // Import Firebase storage
 import './BlogPostTable.css'; // Import the CSS file
 
-const BlogPostTable = ({ posts, onEdit }) => { // Default to empty array if undefined
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showBlogModal, setShowBlogModal] = useState(false);
-  const [postToDelete, setPostToDelete] = useState(null);
-  const [selectedPost, setSelectedPost] = useState(null);
+const BlogPostTable = ({ posts }) => {
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [showPost, setShowPost] = useState({}); // Manage hide/show state
+  const [selectedPost, setSelectedPost] = useState(null); // State to track selected post
+  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // State for delete confirmation dialog
+  const [postToDelete, setPostToDelete] = useState(null); // State to track post to delete
+  const [editPost, setEditPost] = useState(null); // State for post being edited
+  const [newImage, setNewImage] = useState(null); // State to handle new image upload
+  const [loading, setLoading] = useState(false); // Loading state
 
-  const handleDelete = async () => {
-    if (postToDelete) {
-      try {
-        await deleteDoc(doc(db, 'blogPosts', postToDelete));
-        toast.success('Blog post deleted successfully!');
-      } catch (error) {
-        toast.error('Error deleting blog post: ' + error.message);
-      } finally {
-        setShowDeleteModal(false);
-        setPostToDelete(null);
-      }
-    }
-  };
+  useEffect(() => {
+    const filterPosts = () => {
+      const postsByCategory = filterCategory
+        ? posts.filter((post) => post.category === filterCategory)
+        : posts;
+      setFilteredPosts(postsByCategory);
+    };
+    filterPosts();
+  }, [filterCategory, posts]);
 
-  const handleToggleVisibility = async (id, visible) => {
+  const categories = Array.from(new Set(posts.map(post => post.category)));
+  const categoryCounts = categories.reduce((acc, category) => {
+    acc[category] = posts.filter(post => post.category === category).length;
+    return acc;
+  }, {});
+
+  const updatePostVisibility = async (postId, newVisibility) => {
     try {
-      await updateDoc(doc(db, 'blogPosts', id), { visible: !visible });
-      toast.success('Blog post visibility updated!');
+      const postRef = doc(db, 'blogPosts', postId);
+      await updateDoc(postRef, { visible: newVisibility });
+
+      const querySnapshot = await getDocs(collection(db, 'blogPosts'));
+      const updatedPosts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setFilteredPosts(filterCategory ? updatedPosts.filter((post) => post.category === filterCategory) : updatedPosts);
+      setShowPost(prevState => ({
+        ...prevState,
+        [postId]: newVisibility,
+      }));
     } catch (error) {
-      toast.error('Error updating blog post visibility: ' + error.message);
+      console.error('Error updating post visibility: ', error);
     }
   };
 
-  const handleView = (post) => {
-    setSelectedPost(post);
-    setShowBlogModal(true);
+  const togglePostVisibility = (postId) => {
+    const currentVisibility = showPost[postId];
+    updatePostVisibility(postId, !currentVisibility);
   };
 
-  const validPosts = Array.isArray(posts) ? posts : []; // Ensure posts is an array
+  const handleViewPost = (post) => {
+    setSelectedPost(post);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedPost(null);
+    setEditPost(null); // Close the modal and reset editPost
+    setLoading(false); // Reset loading state
+  };
+
+  const handleEditPost = (post) => {
+    setEditPost(post);
+    setShowModal(true);
+  };
+
+  const handleDeletePost = async () => {
+    try {
+      if (postToDelete) {
+        const postRef = doc(db, 'blogPosts', postToDelete.id);
+        await deleteDoc(postRef);
+        setFilteredPosts(filteredPosts.filter(post => post.id !== postToDelete.id));
+        setPostToDelete(null);
+        setShowDeleteConfirm(false);
+      }
+    } catch (error) {
+      console.error('Error deleting post: ', error);
+    }
+  };
+
+  const handleShowDeleteConfirm = (post) => {
+    setPostToDelete(post);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleCloseDeleteConfirm = () => {
+    setShowDeleteConfirm(false);
+    setPostToDelete(null);
+  };
+
+  const handleImageUpload = async (file) => {
+    if (!file) return;
+    const storageRef = ref(storage, `images/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const imageUrl = await getDownloadURL(storageRef);
+    return imageUrl;
+  };
+
+  const handleSubmitEdit = async (event) => {
+    event.preventDefault();
+    setLoading(true); // Start loading
+    try {
+      if (editPost) {
+        let imageUrl = editPost.imageUrl;
+        if (newImage) {
+          imageUrl = await handleImageUpload(newImage);
+        }
+        const postRef = doc(db, 'blogPosts', editPost.id);
+        await updateDoc(postRef, {
+          title: event.target.title.value,
+          description: event.target.description.value,
+          category: event.target.category.value,
+          imageUrl,
+        });
+        setFilteredPosts(filteredPosts.map(post => post.id === editPost.id ? { ...post, title: event.target.title.value, description: event.target.description.value, category: event.target.category.value, imageUrl } : post));
+        handleCloseModal();
+      }
+    } catch (error) {
+      console.error('Error updating post: ', error);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center">Blog Posts</h2>
+    <div className="mb-4">
+      <div className="mb-3">
+        <label htmlFor="categoryFilter" className="form-label">Filter by Category</label>
+        <select
+          id="categoryFilter"
+          className="form-select"
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+        >
+          <option value="">All Categories</option>
+          {categories.map(category => (
+            <option key={category} value={category}>
+              {category} ({categoryCounts[category]})
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th className="title-column">Title</th>
-            <th className="description-column">Description</th>
-            <th className="image-column">Image</th>
-            <th className="category-column">Category</th>
-            <th className="actions-column">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {validPosts.length > 0 ? (
-            validPosts.map((post) => (
-              <tr key={post.id}>
-                <td className="title-column">{post.title}</td>
-                <td className="description-column">{post.description}</td>
-                <td className="image-column">
-                  {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" />}
-                </td>
-                <td className="category-column">{post.category}</td>
-                <td className="actions-column">
-                  <button onClick={() => onEdit(post.id)} className="btn btn-warning btn-sm mr-2">
-                    Edit
-                  </button>
-                  <button 
-                    onClick={() => { setPostToDelete(post.id); setShowDeleteModal(true); }} 
-                    className="btn btn-danger btn-sm mr-2"
-                  >
-                    Delete
-                  </button>
-                  <button 
-                    onClick={() => handleToggleVisibility(post.id, post.visible)} 
-                    className="btn btn-info btn-sm mr-2"
-                  >
-                    {post.visible ? 'Hide' : 'Show'}
-                  </button>
-                  <button 
-                    onClick={() => handleView(post)} 
-                    className="btn btn-primary btn-sm"
-                  >
-                    View Blog
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
+      <div className="table-responsive">
+        <table className="table table-striped table-dark-border">
+          <thead>
             <tr>
-              <td colSpan="5" className="text-center">No posts available</td>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Image</th>
+              <th>Category</th>
+              <th>Visible</th>
+              <th>Actions</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredPosts.map((post) => (
+              <React.Fragment key={post.id}>
+                <tr>
+                  <td>{post.title}</td>
+                  <td>{post.description}</td>
+                  <td>
+                    <img src={post.imageUrl} alt={post.title} style={{ width: '100px', height: 'auto' }} />
+                  </td>
+                  <td>{post.category}</td>
+                  <td>
+                    {post.visible ? 'Yes' : 'No'}
+                  </td>
+                  <td>
+                    <button
+                      className={`btn ${post.visible ? 'btn-danger' : 'btn-success'} btn-sm me-2`}
+                      onClick={() => togglePostVisibility(post.id)}
+                    >
+                      {post.visible ? 'Hide' : 'Show'}
+                    </button>
+                    <button className="btn btn-info btn-sm me-2" onClick={() => handleViewPost(post)}>
+                      View Post
+                    </button>
+                    <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditPost(post)}>
+                      Edit
+                    </button>
+                    <button className="btn btn-danger btn-sm" onClick={() => handleShowDeleteConfirm(post)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      <DeleteConfirmationModal
-        show={showDeleteModal}
-        onHide={() => setShowDeleteModal(false)}
-        onConfirm={handleDelete}
-      />
-      <BlogPostModal
-        show={showBlogModal}
-        onHide={() => setShowBlogModal(false)}
-        post={selectedPost}
-      />
+      {/* Modal for detailed view */}
+      <Modal show={showModal && !editPost} onHide={handleCloseModal} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>{selectedPost?.title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p><strong>Description:</strong> {selectedPost?.description}</p>
+          <p><strong>Category:</strong> {selectedPost?.category}</p>
+          {selectedPost?.imageUrl && (
+            <img src={selectedPost.imageUrl} alt={selectedPost.title} style={{ width: '100%', height: 'auto' }} />
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal for editing post */}
+      <Modal show={showModal && editPost} onHide={handleCloseModal} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Post</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={handleSubmitEdit}>
+          <Modal.Body>
+            <Form.Group controlId="formTitle">
+              <Form.Label>Title</Form.Label>
+              <Form.Control type="text" defaultValue={editPost?.title} name="title" required />
+            </Form.Group>
+            <Form.Group controlId="formDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control as="textarea" rows={3} defaultValue={editPost?.description} name="description" required />
+            </Form.Group>
+            <Form.Group controlId="formCategory">
+              <Form.Label>Category</Form.Label>
+              <Form.Control as="select" defaultValue={editPost?.category} name="category" required>
+                <option value="News">News</option>
+                <option value="Activities">Activities</option>
+                <option value="Partners">Partners</option>
+                <option value="Gallery">Gallery</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="formImage">
+              <Form.Label>Image</Form.Label>
+              <Form.Control type="file" onChange={(e) => setNewImage(e.target.files[0])} />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+            <Button variant="primary" type="submit" disabled={loading}>
+              {loading ? (
+                <>
+                  <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                  <span className="ms-2">Saving...</span>
+                </>
+              ) : (
+                'Save Changes'
+              )}
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+
+      {/* Delete confirmation modal */}
+      <Modal show={showDeleteConfirm} onHide={handleCloseDeleteConfirm} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this post?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDeleteConfirm}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDeletePost}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

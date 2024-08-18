@@ -5,6 +5,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from './firebase';
 import SideNav from './SideNav'; // Import the SideNav component
 import AddBlogForm from './AddBlogForm'; // Import the AddBlogForm component
+import BlogPostTable from './BlogPostTable'; // Import the BlogPostTable component
 
 const BlogPage = () => {
   const [posts, setPosts] = useState([]);
@@ -29,6 +30,7 @@ const BlogPage = () => {
         <SideNav /> {/* Add SideNav here */}
         <div className="col-md-10 ms-sm-auto col-lg-10 px-4">
           <AddBlogForm /> {/* Render AddBlogForm component */}
+          <BlogPostTable posts={posts} /> {/* Render BlogPostTable component */}
         </div>
       </div>
     </div>

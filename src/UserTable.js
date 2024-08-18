@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import * as XLSX from 'xlsx';
 import { CSVLink } from 'react-csv';
+import './BlogPostTable.css'; // Import the CSS file
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);

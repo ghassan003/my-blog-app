@@ -12,10 +12,6 @@ const LoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-    if (email === 'admin@admin.com' && password === 'admin@12345') {
-      localStorage.setItem('authToken', 'your-token'); // Set token or any other auth data
-=======
 
     // Hardcoded credentials
     const validUsername = 'admin@admin.com';
@@ -25,7 +21,6 @@ const LoginPage = () => {
       // Store user session
       localStorage.setItem('user', JSON.stringify({ username }));
       // Redirect to dashboard
->>>>>>> 7c93bb5d2d1834a6cf4158b7b849b8a3f31b035c
       navigate('/dashboard');
     } else {
       setError('Invalid credentials');
