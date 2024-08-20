@@ -1,10 +1,7 @@
-// src/SideNav.js
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './SideNav.css'; // Ensure CSS is imported
-
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
 
 const SideNav = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -52,7 +49,7 @@ const SideNav = () => {
             User
           </Link>
           <Link 
-            to="/blog"  // Updated to match route for BlogPage
+            to="/blog"  
             className={`list-group-item list-group-item-action ${location.pathname === '/blog' ? 'active' : ''}`}
           >
             <i className="bi bi-file-earmark-text me-2"></i>
@@ -64,6 +61,13 @@ const SideNav = () => {
           >
             <i className="bi bi-credit-card me-2"></i>
             View Payment Confirmation
+          </Link>
+          <Link 
+            to="/setup" 
+            className={`list-group-item list-group-item-action ${location.pathname === '/setup' ? 'active' : ''}`}
+          >
+            <i className="bi bi-gear me-2"></i>
+            Setup
           </Link>
           {/* Logout Button */}
           <button 

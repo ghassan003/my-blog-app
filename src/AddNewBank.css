@@ -1,0 +1,22 @@
+/* src/components/AddNewBank.css */
+.add-new-bank {
+    margin-top: 30px;
+  }
+  
+  .add-new-bank h3 {
+    margin-bottom: 20px;
+  }
+  
+
+  .add-new-bank-container {
+    margin: 20px;
+  }
+  
+  .add-new-bank-container .form-control {
+    margin-bottom: 10px;
+  }
+  
+  .add-new-bank-container .btn {
+    margin-top: 10px;
+  }
+  

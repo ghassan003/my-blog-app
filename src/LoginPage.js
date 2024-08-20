@@ -4,6 +4,31 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 
+// const LoginPage = () => {
+//   const [username, setUsername] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [error, setError] = useState('');
+//   const navigate = useNavigate();
+
+//   const handleLogin = (e) => {
+//     e.preventDefault();
+
+//     // Hardcoded credentials
+//     const validUsername = 'admin@admin.com';
+//     const validPassword = 'admin@12345';
+
+//     if (username === validUsername && password === validPassword) {
+//       // Store user session
+//       localStorage.setItem('user', JSON.stringify({ username }));
+//       // Redirect to dashboard
+//       navigate('/dashboard');
+//     } else {
+//       setError('Invalid credentials');
+//     }
+//   };
+
+
+
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -18,8 +43,12 @@ const LoginPage = () => {
     const validPassword = 'admin@12345';
 
     if (username === validUsername && password === validPassword) {
-      // Store user session
-      localStorage.setItem('user', JSON.stringify({ username }));
+      // Simulate a token
+      const token = 'dummy-auth-token-12345';
+
+      // Store user session and token
+      localStorage.setItem('user', JSON.stringify({ username, token }));
+
       // Redirect to dashboard
       navigate('/dashboard');
     } else {

@@ -38,6 +38,7 @@ import EditUser from './EditUser';
 import PaymentConfirmationPage from './PaymentConfirmationPage';
 import LoginPage from './LoginPage';
 import Dashboard from './Dashboard';
+import Setup from './Setup'; // Import the Setup component
 import PrivateRoute from './PrivateRoute';
 
 const App = () => {
@@ -52,6 +53,7 @@ const App = () => {
         <Route path="/edit-user/:id" element={<PrivateRoute element={<EditUser />} />} />
         <Route path="/payment-confirmation" element={<PrivateRoute element={<PaymentConfirmationPage />} />} />
         <Route path="/blog" element={<PrivateRoute element={<BlogPage />} />} />
+        <Route path="/setup" element={<Setup />} /> {/* Setup route */}
               </Routes>
     </Router>
   );
