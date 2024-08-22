@@ -68,3 +68,45 @@
 .text-center {
   text-align: center;
 }
+
+
+
+/* UserPage.css */
+
+.app-container {
+  display: flex;
+}
+
+.main-content {
+  margin-left: 250px; /* Adjust based on SideNav width */
+  padding: 20px;
+  flex-grow: 1;
+  min-height: 100vh;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  min-width: 1000px; /* Ensure table can scroll horizontally */
+}
+
+/* UserPage.css */
+.app-container {
+  display: flex;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  margin-top: 20px;
+}

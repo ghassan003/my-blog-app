@@ -56,46 +56,64 @@ const Dashboard = () => {
     <div className="d-flex">
       <SideNav />
       <div className="content-wrapper">
-         <div className="container mt-5">
-          <h2>Dashboard</h2>
+        <div className="container mt-5">
+          {/* <h2>Dashboard</h2> */}
           <div className="row">
-            {/* Card for Total Posts */}
-            <div className="col-lg-3 col-md-6 mb-4">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">Total Posts</h5>
-                  <p className="card-text">{totalPosts}</p>
+            {/* Consolidated Card */}
+            <div className="col-lg-12 mb-4">
+              <div className="card border-dark">
+                <div className="card-header bg-primary text-white">
+                  <h5 className="card-title mb-0">Dashboard Overview</h5>
                 </div>
-              </div>
-            </div>
-            {/* Card for Total Users */}
-            <div className="col-lg-3 col-md-6 mb-4">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">Total Users</h5>
-                  <p className="card-text">{totalUsers}</p>
-                </div>
-              </div>
-            </div>
-            {/* Card for Paid and Unpaid Users */}
-            <div className="col-lg-6 mb-4">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">User Payment Status</h5>
+                <div className="card-body bg-white">
                   <div className="row">
-                    <div className="col-12 col-md-6 mb-3">
-                      <div className="card bg-success text-white">
+                    {/* Card for Total Posts */}
+                    <div className="col-lg-3 col-md-6 mb-4">
+                  
+                    <div className="card border-dark">
                         <div className="card-body">
-                          <h5 className="card-title">Paid Users</h5>
-                          <p className="card-text">{paidUsers}</p>
+                          <h6 className="card-subtitle mb-2 text-muted">Total Posts</h6>
+                          <p className="card-text">{totalPosts}</p>
+                        </div>
+                      </div>
+                      </div>
+                    
+                    {/* Card for Total Users */}
+                    <div className="col-lg-3 col-md-6 mb-4">
+               
+                      <div className="card border-dark">
+                        <div className="card-body">
+                          <h6 className="card-subtitle mb-2 text-muted">Total Users</h6>
+                          <p className="card-text">{totalUsers}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="col-12 col-md-6 mb-3">
-                      <div className="card bg-danger text-white">
+               
+                    {/* Card for Paid and Unpaid Users */}
+                    <div className="col-lg-4 mb-4">
+                    <div className="card border-dark">
                         <div className="card-body">
-                          <h5 className="card-title">Unpaid Users</h5>
-                          <p className="card-text">{unpaidUsers}</p>
+                     
+                          <h6 className="card-subtitle mb-2 text-muted">User Payment Status</h6>
+                          <div className="row">
+                            <div className="col-12 col-md-6 mb-3">
+                              <div className="card bg-success text-white">
+                                <div className="card-body">
+                                  <h6 className="card-subtitle mb-2">Paid Users</h6>
+                                  <p className="card-text">{paidUsers}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-6 mb-3">
+                              <div className="card bg-danger text-white">
+                                <div className="card-body">
+                                  <h6 className="card-subtitle mb-2">Unpaid Users</h6>
+                                  <p className="card-text">{unpaidUsers}</p>
+                                </div>
+                              </div>
+                            </div>
+                      
+                        </div>
                         </div>
                       </div>
                     </div>

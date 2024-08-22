@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
-import { db, storage } from './firebase'; // Import storage from firebase config
+// import { db, storage } from './firebase'; // Import storage from firebase config
+import { db, storage } from './firebase';
+// Your existing code...
+
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Modal, Button, Spinner, Card } from 'react-bootstrap';
 

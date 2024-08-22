@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
 import { collection, getDocs, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
-import { db } from './firebase'; // Adjust the path as needed
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from './firebase'; // Adjust the path as needed
 
 const BankDataManager = () => {
   const [banks, setBanks] = useState([]);
   const [selectedBank, setSelectedBank] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [bankIconUrl, setBankIconUrl] = useState(''); // For storing the bank icon URL
+  const [bankIconUrl, setBankIconUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,13 +20,6 @@ const BankDataManager = () => {
     fetchData();
   }, []);
 
-  const handleEdit = (bank) => {
-    setSelectedBank(bank);
-    setBankIconUrl(bank.bankIcon || ''); // Load existing icon URL if any
-    setEditMode(true);
-    setShowModal(true);
-  };
-
   const handleAdd = () => {
     setSelectedBank({
       name: '',
@@ -35,7 +29,6 @@ const BankDataManager = () => {
       bankIcon: ''
     });
     setBankIconUrl(''); // Clear the icon URL for new bank
-    setEditMode(false);
     setShowModal(true);
   };
 
@@ -56,6 +49,16 @@ const BankDataManager = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+
+    if (loading) return; // Prevent saving if loading
+
+    if (!bankIconUrl) {
+      console.error('Bank Icon URL is not set.');
+      return;
+    }
+
+    setLoading(true);
+
     const data = {
       name: selectedBank.name,
       accountTitle: selectedBank.accountTitle,
@@ -64,18 +67,20 @@ const BankDataManager = () => {
       status: selectedBank.status
     };
 
-    if (editMode) {
-      const bankRef = doc(db, 'banks', selectedBank.id);
-      await updateDoc(bankRef, data);
-    } else {
+    try {
       await addDoc(collection(db, 'banks'), data);
+
+      // Refresh the bank list
+      const querySnapshot = await getDocs(collection(db, 'banks'));
+      setBanks(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setShowModal(false);
+      setSelectedBank(null);
+      setBankIconUrl(''); // Clear bankIcon URL after saving
+    } catch (error) {
+      console.error('Error saving data:', error);
+    } finally {
+      setLoading(false); // Reset loading state
     }
-    
-    const querySnapshot = await getDocs(collection(db, 'banks'));
-    setBanks(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    setShowModal(false);
-    setSelectedBank(null);
-    setBankIconUrl(''); // Clear bankIcon URL after saving
   };
 
   const handleInputChange = (e) => {
@@ -83,13 +88,24 @@ const BankDataManager = () => {
     setSelectedBank(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleIconUpload = (e) => {
+  const handleIconUpload = async (e) => {
     const file = e.target.files[0];
-    // Implement file upload logic and get the URL
-    // For simplicity, here we'll just set the file name
-    // In production, upload the file to a storage service and get the URL
     if (file) {
-      setBankIconUrl(URL.createObjectURL(file)); // Replace with your upload logic
+      try {
+        // Create a reference to Firebase Storage
+        const storageRef = ref(storage, `bankIcons/${file.name}`);
+        
+        // Upload the file
+        const uploadResult = await uploadBytes(storageRef, file);
+        
+        // Get the download URL
+        const url = await getDownloadURL(uploadResult.ref);
+        
+        // Set the bank icon URL to the Firebase Storage URL
+        setBankIconUrl(url);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
     }
   };
 
@@ -119,7 +135,6 @@ const BankDataManager = () => {
               </td>
               <td>{bank.status}</td>
               <td>
-                <Button variant="warning" onClick={() => handleEdit(bank)}>Edit</Button>
                 <Button variant="danger" onClick={() => handleDelete(bank.id)}>Delete</Button>
                 <Button
                   variant={bank.status === 'Active' ? 'secondary' : 'success'}
@@ -135,7 +150,7 @@ const BankDataManager = () => {
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>{editMode ? 'Edit Bank' : 'Add Bank'}</Modal.Title>
+          <Modal.Title>Add Bank</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSave}>
@@ -193,8 +208,8 @@ const BankDataManager = () => {
               </Form.Select>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
-              Save
+            <Button variant="primary" type="submit" disabled={loading}>
+              {loading ? 'Saving...' : 'Save'}
             </Button>
           </Form>
         </Modal.Body>

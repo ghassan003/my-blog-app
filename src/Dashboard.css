@@ -120,3 +120,41 @@ body, html {
 .text-center {
   text-align: center;
 }
+
+
+
+/* Dashboard.css */
+
+/* General Card Styles */
+.card-primary {
+  border: 1px solid #007bff;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card-primary .card-body {
+  background-color: #007bff;
+  color: white;
+}
+
+.card-primary .card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.card-primary .card-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.card-primary:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Additional Styles */
+.content-wrapper {
+  margin-left: 250px;
+  padding: 20px;
+  flex-grow: 1;
+}

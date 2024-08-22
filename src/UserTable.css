@@ -1,0 +1,88 @@
+/* Container Styling */
+.table-container {
+  padding: 15px;
+  margin: 0;
+}
+
+/* Filters Styling */
+.filters {
+  margin-bottom: 15px;
+}
+
+.filter-group {
+  margin-bottom: 15px;
+  padding: 0;
+}
+
+/* Table Styling */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Table Header Styling */
+thead {
+  background-color: #007bff; /* Primary color for the entire thead */
+  color: rgb(161, 35, 35); /* Text color for the header */
+}
+
+thead th {
+  padding: 10px;
+}
+
+/* Body Cells Styling */
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Styling for Table Rows */
+tbody tr:nth-child(even) {
+  background-color: #f8f9fa; /* Light grey for even rows */
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1; /* Slightly darker grey on hover */
+}
+
+/* Styling for Action Buttons in the Table */
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+/* Ensure the Table is Responsive */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+img {
+  border-radius: 4px;
+}
+
+
+/* Table Header Styling */
+thead {
+  background-color: #007bff; /* Primary color for the entire thead */
+  color: white; /* Text color for the header */
+}
+
+thead th {
+  padding: 10px;
+  font-weight: bold; /* Increase the font-weight */
+}
+
+/* Body Cells Styling */
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Additional styling remains the same */

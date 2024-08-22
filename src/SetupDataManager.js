@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
-//import { 
-, getDocs, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
+// //import { 
+// , getDocs, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
 import { db } from './firebase'; // Adjust the path as needed
 
 import { collection, getDocs, doc, updateDoc,  addDoc } from 'firebase/firestore';
