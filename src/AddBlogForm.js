@@ -72,12 +72,25 @@ const AddBlogForm = () => {
 
   return (
     <Card className="mb-4 border-dark">
-      <Card.Header className="d-flex justify-content-between align-items-center">
+      {/* <Card.Header className="d-flex justify-content-between align-items-center">
+
         <h2 className="mb-0">Add New Blog Post</h2>
         <Button variant="secondary" onClick={toggleFormVisibility}>
           {isFormVisible ? 'Hide' : 'Show'} Form
         </Button>
-      </Card.Header>
+      </Card.Header> */}
+
+
+      <div className="card-header bg-primary text-white">
+  <div className="d-flex justify-content-between align-items-center">
+  <h2 className="mb-0 text-center flex-grow-1">Add New Blog Post</h2>
+    <Button variant="secondary" onClick={toggleFormVisibility}>
+      {isFormVisible ? 'Hide' : 'Show'} Form
+    </Button>
+  </div>
+</div>
+
+
       
       {isFormVisible && (
         <Card.Body>

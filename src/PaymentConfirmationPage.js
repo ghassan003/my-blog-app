@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
-import { db } from './firebase'; // Import Firestore
-//import { requestPermission } from './firebase'; // Import Firebase setup
+import { db } from './firebase';
 import { toast } from 'react-toastify';
-import { Card, Row, Col, Form } from 'react-bootstrap'; // Import Bootstrap components
-import SideNav from './SideNav'; // Import SideNav component
-import CountdownLoader from './CountdownLoader'; // Import CountdownLoader component
+import { Card, Row, Col, Form } from 'react-bootstrap';
+import SideNav from './SideNav';
+import CountdownLoader from './CountdownLoader';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './PaymentConfirmationPage.css'; // Import custom CSS
+import './PaymentConfirmationPage.css';
 
 const PaymentConfirmationPage = () => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [emailFilter, setEmailFilter] = useState('');
   const [mobileFilter, setMobileFilter] = useState('');
+  const [depositedByFilter, setDepositedByFilter] = useState('');
 
   useEffect(() => {
-    // Request notification permission when component mounts
-   // requestPermission();
-
     const fetchPayments = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'payments'));
@@ -28,7 +25,7 @@ const PaymentConfirmationPage = () => {
           return {
             id: doc.id,
             ...data,
-            date: date ? (date.toDate ? date.toDate() : new Date(date)) : null
+            date: date ? (date.toDate ? date.toDate() : new Date(date)) : null,
           };
         });
         setPayments(paymentsList);
@@ -49,24 +46,6 @@ const PaymentConfirmationPage = () => {
         payment.id === paymentId ? { ...payment, status: newStatus } : payment
       ));
       toast.success('Payment status updated successfully');
-
-      // Replace with the actual FCM token
-      const userToken = 'USER_FCM_TOKEN'; 
-
-      // Make a request to your backend to send the notification
-      const response = await fetch('/api/sendNotification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          paymentId,
-          newStatus,
-          userToken
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send notification');
-      }
     } catch (error) {
       toast.error('Error updating payment status: ' + error.message);
     }
@@ -74,7 +53,8 @@ const PaymentConfirmationPage = () => {
 
   const filteredPayments = payments.filter(payment =>
     (payment.email || '').toLowerCase().includes(emailFilter.toLowerCase()) &&
-    (payment.mobileNumber || '').toLowerCase().includes(mobileFilter.toLowerCase())
+    (payment.mobileNumber || '').toLowerCase().includes(mobileFilter.toLowerCase()) &&
+    (payment.depositedBy || '').toLowerCase().includes(depositedByFilter.toLowerCase())
   );
 
   if (loading) return <CountdownLoader />;
@@ -83,72 +63,96 @@ const PaymentConfirmationPage = () => {
     <div className="d-flex">
       <SideNav />
       <div className="content-wrapper">
-        <h2 className="text-center">User Payment Confirmation</h2>
-        <Card className="mb-4">
-          <Card.Body>
-            <Row>
-              <Col md={4}>
-                <Form.Group controlId="emailFilter">
-                  <Form.Label>Filter by Email:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter email"
-                    value={emailFilter}
-                    onChange={(e) => setEmailFilter(e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={4}>
-                <Form.Group controlId="mobileFilter">
-                  <Form.Label>Filter by Mobile Number:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter mobile number"
-                    value={mobileFilter}
-                    onChange={(e) => setMobileFilter(e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12 mb-4">
+              <div className="card border-dark">
+                <div className="card-header bg-primary text-white">
+                  
+                  <h5  className="card-title mb-0 text-center custom-title">User Payment Confirmation</h5>
+                </div>
+                <div className="card-body">
+                  <Card className="mb-4">
+                    <Card.Body>
+                      <Row>
+                        <Col md={4}>
+                          <Form.Group controlId="emailFilter">
+                            <Form.Label className="custom-label">Filter by Email:</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter email"
+                              value={emailFilter}
+                              onChange={(e) => setEmailFilter(e.target.value)}
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group controlId="mobileFilter">
+                            <Form.Label className="custom-label">Filter by Mobile Number:</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter mobile number"
+                              value={mobileFilter}
+                              onChange={(e) => setMobileFilter(e.target.value)}
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group controlId="depositedByFilter">
+                            <Form.Label className="custom-label">Filter by Deposited By:</Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter depositor's name"
+                              value={depositedByFilter}
+                              onChange={(e) => setDepositedByFilter(e.target.value)}
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
 
-        <div className="table-responsive">
-          <table className="table table-bordered table-striped mt-4">
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Mobile Number</th>
-                <th>Deposited By</th>
-                <th>Transaction Reference Number</th>
-                <th>Date</th>
-                <th>Bank Name</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredPayments.map((payment) => (
-                <tr key={payment.id}>
-                  <td>{payment.email || 'N/A'}</td>
-                  <td>{payment.mobileNumber || 'N/A'}</td>
-                  <td>{payment.depositedBy}</td>
-                  <td>{payment.transactionRef}</td>
-                  <td>{payment.date ? new Date(payment.date).toLocaleDateString() : 'N/A'}</td>
-                  <td>{payment.bankName}</td>
-                  <td>
-                    <select
-                      className="form-select"
-                      value={payment.status || 'Pending'}
-                      onChange={(e) => handlePaymentStatusChange(payment.id, e.target.value)}
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Received">Received</option>
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  <div className="table-responsive">
+                    <table className="table table-bordered table-striped mt-4">
+                      <thead>
+                        <tr>
+                          <th>Email</th>
+                          <th>Mobile Number</th>
+                          <th>Deposited By</th>
+                          <th>Transaction Reference Number</th>
+                          <th>Date</th>
+                          <th>Bank Name</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredPayments.map((payment) => (
+                          <tr key={payment.id}>
+                            <td>{payment.email || 'N/A'}</td>
+                            <td>{payment.mobileNumber || 'N/A'}</td>
+                            <td>{payment.depositedBy}</td>
+                            <td>{payment.transactionRef}</td>
+                            <td>{payment.date ? new Date(payment.date).toLocaleDateString() : 'N/A'}</td>
+                            <td>{payment.bankName}</td>
+                            <td>
+                              <select
+                                className="form-select"
+                                value={payment.status || 'Pending'}
+                                onChange={(e) => handlePaymentStatusChange(payment.id, e.target.value)}
+                              >
+                                <option value="Pending">Pending</option>
+                                <option value="Received">Received</option>
+                              </select>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

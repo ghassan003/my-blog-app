@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Modal, Form } from 'react-bootstrap';
+import { Button, Table, Modal, Form, Alert } from 'react-bootstrap';
 import { collection, getDocs, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './firebase'; // Adjust the path as needed
@@ -10,6 +10,7 @@ const BankDataManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [bankIconUrl, setBankIconUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPopup, setShowPopup] = useState({ show: false, message: '' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +29,7 @@ const BankDataManager = () => {
       status: 'Active',
       bankIcon: ''
     });
-    setBankIconUrl(''); // Clear the icon URL for new bank
+    setBankIconUrl(''); 
     setShowModal(true);
   };
 
@@ -42,7 +43,6 @@ const BankDataManager = () => {
     const bankRef = doc(db, 'banks', bank.id);
     await updateDoc(bankRef, { status: newStatus });
 
-    // Refresh the bank list
     const querySnapshot = await getDocs(collection(db, 'banks'));
     setBanks(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
   };
@@ -50,10 +50,10 @@ const BankDataManager = () => {
   const handleSave = async (e) => {
     e.preventDefault();
 
-    if (loading) return; // Prevent saving if loading
+    if (loading) return; 
 
     if (!bankIconUrl) {
-      console.error('Bank Icon URL is not set.');
+      setShowPopup({ show: true, message: 'Bank Icon URL is not set.' });
       return;
     }
 
@@ -63,23 +63,22 @@ const BankDataManager = () => {
       name: selectedBank.name,
       accountTitle: selectedBank.accountTitle,
       accountNumber: selectedBank.accountNumber,
-      bankIcon: bankIconUrl, // Include bankIcon URL in data
+      bankIcon: bankIconUrl,
       status: selectedBank.status
     };
 
     try {
       await addDoc(collection(db, 'banks'), data);
 
-      // Refresh the bank list
       const querySnapshot = await getDocs(collection(db, 'banks'));
       setBanks(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       setShowModal(false);
       setSelectedBank(null);
-      setBankIconUrl(''); // Clear bankIcon URL after saving
+      setBankIconUrl('');
     } catch (error) {
       console.error('Error saving data:', error);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -90,28 +89,28 @@ const BankDataManager = () => {
 
   const handleIconUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
+    
+    if (file && file.type === 'image/png') {
       try {
-        // Create a reference to Firebase Storage
         const storageRef = ref(storage, `bankIcons/${file.name}`);
-        
-        // Upload the file
         const uploadResult = await uploadBytes(storageRef, file);
-        
-        // Get the download URL
         const url = await getDownloadURL(uploadResult.ref);
-        
-        // Set the bank icon URL to the Firebase Storage URL
         setBankIconUrl(url);
+        setShowPopup({ show: false, message: '' });
       } catch (error) {
         console.error('Error uploading file:', error);
       }
+    } else {
+      setShowPopup({ show: true, message: 'Please upload a .png file.' });
+      e.target.value = null;
     }
   };
 
+  const handleClosePopup = () => setShowPopup({ show: false, message: '' });
+
   return (
     <div>
-      <h3>Bank Data Manager</h3>
+       <h3 className="text-center">Bank Data Manager</h3>
       <Button variant="primary" onClick={handleAdd} className="mb-3">Add New Bank</Button>
       <Table striped bordered hover>
         <thead>
@@ -195,6 +194,13 @@ const BankDataManager = () => {
               />
               {bankIconUrl && <img src={bankIconUrl} alt="Bank Icon Preview" style={{ width: '100px', height: '100px', marginTop: '10px' }} />}
             </Form.Group>
+
+            {/* Popup message for invalid file type */}
+            {showPopup.show && (
+              <Alert variant="danger" onClose={handleClosePopup} dismissible>
+                {showPopup.message}
+              </Alert>
+            )}
 
             <Form.Group className="mb-3" controlId="formStatus">
               <Form.Label>Status</Form.Label>

@@ -64,6 +64,16 @@
   border: 1px solid #333; /* Dark border color */
 }
 
+.form-label {
+  font-weight: bold;
+  font-size: 1.2rem; /* Increase the size by 2 units (20% larger than the default size) */
+}
+
+
+
+
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .table .title-column,

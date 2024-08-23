@@ -13,7 +13,7 @@ const UserTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  
+
   // Filter states
   const [batchFilter, setBatchFilter] = useState('');
   const [professionFilter, setProfessionFilter] = useState('');
@@ -114,134 +114,145 @@ const UserTable = () => {
 
   return (
     <div className="table-container">
-      {/* Filters */}
+      <div className="box-container p-3 mb-3 border rounded bg-light">
+        <div className="row align-items-center">
+    {/* User Count */}
+ 
+    
+    {/* Filters */}
+    <div className="col-md-12">
       <div className="filters row">
-  <div className="filter-group col-md-3">
-    <label>Batch:</label>
-    <select
-      className="form-select"
-      value={batchFilter}
-      onChange={(e) => setBatchFilter(e.target.value)}
-    >
-      <option value="">All</option>
-      {batchOptions.map((year) => (
-        <option key={year} value={year}>{year}</option>
-      ))}
-    </select>
-  </div>
-  <div className="filter-group col-md-4">
-    <label>Profession:</label>
-    <select
-      className="form-select"
-      value={professionFilter}
-      onChange={(e) => setProfessionFilter(e.target.value)}
-    >
-      <option value="">All</option>
-      <option value="Government Employee">Government Employee</option>
-      <option value="Private Sector">Private Sector</option>
-      <option value="Merchant">Merchant</option>
-      <option value="Job seeker">Job seeker</option>
-    </select>
-  </div>
-  <div className="filter-group col-md-4">
-    <label>Educational Background:</label>
-    <select
-      className="form-select"
-      value={educationFilter}
-      onChange={(e) => setEducationFilter(e.target.value)}
-    >
-      <option value="">All</option>
-      <option value="High school">High school</option>
-      <option value="College diploma">College diploma</option>
-      <option value="BA/BSc">BA/BSc</option>
-      <option value="MA/MSC">MA/MSC</option>
-      <option value="PhD">PhD</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-</div>
+        <div className="filter-group col-md-4">
+          <label><strong>Batch:</strong></label>
+          <select
+            className="form-select"
+            value={batchFilter}
+            onChange={(e) => setBatchFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            {batchOptions.map((year) => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+        <div className="filter-group col-md-4">
+          <label><strong>Profession:</strong></label>
+          <select
+            className="form-select"
+            value={professionFilter}
+            onChange={(e) => setProfessionFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="Government Employee">Government Employee</option>
+            <option value="Private Sector">Private Sector</option>
+            <option value="Merchant">Merchant</option>
+            <option value="Job seeker">Job seeker</option>
+          </select>
+        </div>
+        <div className="filter-group col-md-4">
+          <label><strong>Educational Background:</strong></label>
+          <select
+            className="form-select"
+            value={educationFilter}
+            onChange={(e) => setEducationFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="High school">High school</option>
+            <option value="College diploma">College diploma</option>
+            <option value="BA/BSc">BA/BSc</option>
+            <option value="MA/MSC">MA/MSC</option>
+            <option value="PhD">PhD</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-
-      {/* User Count */}
+       <div className="col-md-3">
       <div className="user-count">
         <h5>Total Users: {users.length}</h5>
         <h5>Filtered Users: {filteredUsers.length}</h5>
       </div>
+    </div>
+    
+    {/* Export Buttons */}
+    <div className="col-md-3 d-flex justify-content-end">
+      <button className="btn btn-success me-2" onClick={exportToExcel}>
+        Export to Excel
+      </button>
+      <CSVLink 
+        data={filteredUsers} 
+        headers={csvHeaders} 
+        filename="UsersData.csv" 
+        className="btn btn-warning"
+      >
+        Export to CSV
+      </CSVLink>
+    </div>
 
-      {/* Export Buttons */}
-      <div className="export-buttons">
-        <button className="btn btn-success me-2" onClick={exportToExcel}>
-          Export to Excel
-        </button>
-        <CSVLink 
-          data={filteredUsers} 
-          headers={csvHeaders} 
-          filename="UsersData.csv" 
-          className="btn btn-warning"
-        >
-          Export to CSV
-        </CSVLink>
-      </div>
-
+  </div>
+</div>
+      {/* Table */}
       <div className="table-wrapper">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Full Name</th>
-              <th>Phone Number</th>
-              <th>Email</th>
-              <th>Batch</th>
-              <th>Profession</th>
-              <th>Educational Background</th>
-              <th>Photo</th>
-              <th>Payment Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.map((user) => (
-              <tr key={user.id}>
-                <td>{user.fullName}</td>
-                <td>{user.phoneNumber}</td>
-                <td>{user.email}</td>
-                <td>{user.batch}</td>
-                <td>{user.profession}</td>
-                <td>{user.education}</td>
-                <td>
-                  {user.photoUrl ? (
-                    <img src={user.photoUrl} alt="User" style={{ width: '100px', height: 'auto' }} />
-                  ) : (
-                    'No Photo'
-                  )}
-                </td>
-                <td>
-                  <select
-                    className="form-select"
-                    value={user.paymentStatus || 'Unpaid'}
-                    onChange={(e) => handlePaymentStatusChange(user.id, e.target.value)}
-                  >
-                    <option value="Paid">Paid</option>
-                    <option value="Unpaid">Unpaid</option>
-                  </select>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => openDeleteConfirmation(user.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <table className="table table-striped table-bordered">
+  <thead className="bg-primary text-white">
+    <tr>
+      <th>Full Name</th>
+      <th>Phone Number</th>
+      <th>Email</th>
+      <th>Batch</th>
+      <th>Profession</th>
+      <th>Educational Background</th>
+      <th>Photo</th>
+      <th>Payment Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {filteredUsers.map((user) => (
+      <tr key={user.id}>
+        <td>{user.fullName}</td>
+        <td>{user.phoneNumber}</td>
+        <td>{user.email}</td>
+        <td>{user.batch}</td>
+        <td>{user.profession}</td>
+        <td>{user.education}</td>
+        <td>
+          {user.photoUrl ? (
+            <img src={user.photoUrl} alt="User" style={{ width: '100px', height: 'auto' }} />
+          ) : (
+            'No Photo'
+          )}
+        </td>
+        <td>
+          <select
+            className="form-select"
+            value={user.paymentStatus || 'Unpaid'}
+            onChange={(e) => handlePaymentStatusChange(user.id, e.target.value)}
+          >
+            <option value="Paid">Paid</option>
+            <option value="Unpaid">Unpaid</option>
+          </select>
+        </td>
+        <td>
+          <button
+            className="btn btn-danger"
+            onClick={() => openDeleteConfirmation(user.id)}
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
       </div>
 
-      <DeleteConfirmationModal
-        show={showModal}
-        onHide={handleModalClose}
-        onConfirm={handleDelete}
+      <DeleteConfirmationModal 
+        showModal={showModal} 
+        handleClose={handleModalClose} 
+        handleDelete={handleDelete} 
       />
     </div>
   );

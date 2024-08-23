@@ -10,9 +10,14 @@ const Setup = () => {
       <SideNav /> {/* Render the SideNav component */}
       <div className="main-content">
         <Container className="mt-5">
-          <h2>Setup</h2>
+          {/* <h2>Setup</h2> */}
           <Card>
-            <Card.Header className="bg-primary text-white">Setup Configuration</Card.Header>
+            <Card.Header className="bg-primary text-white text-center">
+              
+
+              <h3 className="text-center">Setup Configuration</h3>
+              
+              </Card.Header>
             <Card.Body>
               <SetupDataManager /> {/* Render the SetupDataManager component */}
          

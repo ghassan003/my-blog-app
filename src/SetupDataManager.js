@@ -103,7 +103,8 @@ const SetupDataManager = () => {
 
   return (
     <div>
-      <h3>Setup Data Manager</h3>
+      
+      <h3 className="text-center">Setup Data Manager</h3>
       {/* <Button variant="primary" onClick={handleAdd} className="mb-3">Add New Setup Data</Button> */}
       <Table striped bordered hover>
         <thead>

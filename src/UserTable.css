@@ -86,3 +86,26 @@ tbody td {
 }
 
 /* Additional styling remains the same */
+
+
+
+.filters {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.filter-group label {
+  font-weight: bold;
+}
+
+.export-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  width: 100%;
+}
