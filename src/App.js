@@ -62,40 +62,41 @@
 // export default App;
 
 
-// src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import BlogPage from './BlogPage';
-import UserPage from './UserPage';
-import UserTable from './UserTable';
-import AddUserForm from './AddUserForm';
-import EditUser from './EditUser';
-import PaymentConfirmationPage from './PaymentConfirmationPage';
-import Dashboard from './Dashboard';
-import Setup from './Setup'; // Import the Setup component
-import PrivateRoute from './PrivateRoute';
+  // src/App.js
+  import React from 'react';
+  import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+  import BlogPage from './BlogPage';
+  import UserPage from './UserPage';
+  import UserTable from './UserTable';
+  import AddUserForm from './AddUserForm';
+  import EditUser from './EditUser';
+  import PaymentConfirmationPage from './PaymentConfirmationPage';
+  import Dashboard from './Dashboard';
+  import Setup from './Setup'; // Import the Setup component
+  import LoginPage from './LoginPage'; // Import LoginPage
+  import PrivateRoute from './PrivateRoute';
 
-const App = () => {
-  return (
-    <Router>
-      <Routes>
-        {/* Commented out the LoginPage route */}
-        {/* <Route path="/" element={<LoginPage />} /> */}
+  const App = () => {
+    return (
+      <Router>
+        <Routes>
+          {/* Commented out the LoginPage route */}
+          <Route path="/" element={<LoginPage />} />
 
-        {/* Redirect root path to dashboard */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        
-        <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-        <Route path="/user" element={<PrivateRoute element={<UserPage />} />} />
-        <Route path="/user-table" element={<PrivateRoute element={<UserTable />} />} />
-        <Route path="/add-user" element={<PrivateRoute element={<AddUserForm />} />} />
-        <Route path="/edit-user/:id" element={<PrivateRoute element={<EditUser />} />} />
-        <Route path="/payment-confirmation" element={<PrivateRoute element={<PaymentConfirmationPage />} />} />
-        <Route path="/blog" element={<PrivateRoute element={<BlogPage />} />} />
-        <Route path="/setup" element={<Setup />} /> {/* Setup route */}
-      </Routes>
-    </Router>
-  );
-};
+          {/* Redirect root path to dashboard */}
+          {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
+          
+          <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+          <Route path="/user" element={<PrivateRoute element={<UserPage />} />} />
+          <Route path="/user-table" element={<PrivateRoute element={<UserTable />} />} />
+          <Route path="/add-user" element={<PrivateRoute element={<AddUserForm />} />} />
+          <Route path="/edit-user/:id" element={<PrivateRoute element={<EditUser />} />} />
+          <Route path="/payment-confirmation" element={<PrivateRoute element={<PaymentConfirmationPage />} />} />
+          <Route path="/blog" element={<PrivateRoute element={<BlogPage />} />} />
+          <Route path="/setup" element={<Setup />} /> {/* Setup route */}
+        </Routes>
+      </Router>
+    );
+  };
 
-export default App;
+  export default App;

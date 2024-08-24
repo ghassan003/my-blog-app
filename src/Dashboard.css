@@ -57,7 +57,7 @@ body, html {
     transform: translateX(-100%); /* Hide offscreen */
   }
 
-  .sidebar-wrapper.show {
+  #sidebar-wrapper.show {
     transform: translateX(0); /* Show sidebar */
   }
 
@@ -76,6 +76,7 @@ body, html {
 /* Card styles */
 .card {
   border: 1px solid #ddd;
+  transition: transform 0.3s ease;
 }
 
 .card-body {
@@ -83,11 +84,49 @@ body, html {
 }
 
 .card-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
 .card-text {
   font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-subtitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card specific styles */
+.card-primary {
+  border: 1px solid #007bff;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card-primary .card-body {
+  background-color: #007bff;
+  color: white;
+}
+
+.card-primary .card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.card-primary .card-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.card-primary:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Spacing and alignment */
@@ -119,42 +158,4 @@ body, html {
 
 .text-center {
   text-align: center;
-}
-
-
-
-/* Dashboard.css */
-
-/* General Card Styles */
-.card-primary {
-  border: 1px solid #007bff;
-  border-radius: 0.25rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
-}
-
-.card-primary .card-body {
-  background-color: #007bff;
-  color: white;
-}
-
-.card-primary .card-title {
-  font-size: 1.25rem;
-  font-weight: 500;
-}
-
-.card-primary .card-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.card-primary:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Additional Styles */
-.content-wrapper {
-  margin-left: 250px;
-  padding: 20px;
-  flex-grow: 1;
 }
