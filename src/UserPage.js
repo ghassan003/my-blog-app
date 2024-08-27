@@ -33,6 +33,9 @@ const UserPage = () => {
             <h2 className="text-center mb-4">User Management</h2>            </Card.Header>
             <Card.Body>
               <div className="table-responsive">
+
+
+                
                 <UserTable /> {/* Render the UserTable component */}
               </div>
             </Card.Body>

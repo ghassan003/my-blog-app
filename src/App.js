@@ -134,7 +134,7 @@ const App = () => {
         <Route path="/payment-confirmation" element={<PrivateRoute element={<PaymentConfirmationPage />} />} />
         <Route path="/blog" element={<PrivateRoute element={<BlogPage />} />} />
         <Route path="/setup" element={<Setup />} />
-        <Route path="/notification" element={<NotificationForm />} /> {/* Add the NotificationForm route */}
+        <Route path="/notification" element={<NotificationForm />} /> Add the NotificationForm route
       </Routes>
     </Router>
   );
