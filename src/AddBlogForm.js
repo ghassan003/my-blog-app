@@ -139,11 +139,22 @@ const AddBlogForm = () => {
                 onChange={(e) => setCategory(e.target.value)}
                 required
               >
-                <option value="">Select category</option>
-                <option value="News">News</option>
-                <option value="Activities">Activities</option>
-                <option value="Partners">Partners</option>
-                <option value="Gallery">Gallery</option>
+<option value="">Select category</option>
+              <option value="News">News</option>
+              <option value="Activities">Activities</option>
+              <option value="Awolia School">Awolia School</option>
+              <option value="Partners">Partners</option>
+              <option value="Sponsors">Sponsors</option>
+              <option value="Gallery">Gallery</option>
+              <option value="About us">About us</option>
+              <option value="Annual Get together">Annual Get together</option>
+              <option value="Jobs Fair">Jobs Fair</option>
+              <option value="Business Lead">Business Lead</option>
+              <option value="Honourary Members">Honourary Members</option>
+              <option value="Arabic Language Training">Arabic Language Training</option>
+              <option value="Vote Poll Gathering form">Vote Poll Gathering form</option>
+
+
               </select>
             </div>
             <button type="submit" className="btn btn-primary" disabled={loading}>

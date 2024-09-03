@@ -1,18 +1,19 @@
+// DeleteConfirmationModal.js
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const DeleteConfirmationModal = ({ show, onHide, onConfirm }) => {
+const DeleteConfirmationModal = ({ show, handleClose, handleDelete }) => {
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Confirm Deletion</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Are you sure you want to delete this blog post?</Modal.Body>
+      <Modal.Body>Are you sure you want to delete this user?</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button variant="danger" onClick={onConfirm}>
+        <Button variant="danger" onClick={handleDelete}>
           Delete
         </Button>
       </Modal.Footer>
