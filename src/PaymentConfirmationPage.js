@@ -1086,11 +1086,11 @@ const PaymentConfirmationPage = () => {
                 paymentStatus: 'PENDING',
               });
             }
-           if (payment.paymentStatus === 'Reject') {
-              payment.paymentStatus = 'Reject';
+            else if (payment.paymentStatus === 'REJCET') {
+              payment.paymentStatus = 'REJCET';
               pending += 1;
               await updateDoc(doc(db, 'payments', payment.id), {
-                paymentStatus: 'Reject',
+                paymentStatus: 'REJCET',
               });
             }
 
@@ -1443,10 +1443,10 @@ const StatusUpdateModal = ({ show, handleClose, payment, updatePaymentStatus }) 
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="PENDING">Pending</option>
-              <option value="PAID">Paid</option>
-              <option value="PAID">Reject</option>
-              <option value="EXPIRED">Expired</option>
+              <option value="PENDING">PENDING</option>
+              <option value="PAID">PAID</option>
+              <option value="REJCET">REJCET</option>
+              <option value="EXPIRED">EXPIRED</option>
               {/* Add more options if needed */}
             </Form.Control>
           </Form.Group>
