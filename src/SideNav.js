@@ -46,7 +46,7 @@ const SideNav = () => {
             className={`list-group-item list-group-item-action ${location.pathname === '/user' ? 'active' : ''}`}
           >
             <i className="bi bi-person me-2"></i>
-            User
+            Member Management
           </Link>
           <Link 
             to="/blog"  
@@ -69,6 +69,16 @@ const SideNav = () => {
             <i className="bi bi-gear me-2"></i>
             Setup
           </Link>
+
+          {/* New "User Management" Button */}
+          <Link 
+            to="/user-management" 
+            className={`list-group-item list-group-item-action ${location.pathname === '/user-management' ? 'active' : ''}`}
+          >
+            <i className="bi bi-people me-2"></i>
+            User Management
+          </Link>
+
           {/* Logout Button */}
           <button 
             className="list-group-item list-group-item-action"

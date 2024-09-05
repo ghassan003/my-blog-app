@@ -467,8 +467,8 @@ const UserTable = () => {
           </div>
           <div className="col-md-3">
             <div className="user-count">
-              <h5>Total Users: {users.length}</h5>
-              <h5>Filtered Users: {filteredUsers.length}</h5>
+              <h5>Total Member: {users.length}</h5>
+              <h5>Filtered Member: {filteredUsers.length}</h5>
             </div>
           </div>
           <div className="col-md-3 d-flex justify-content-end">

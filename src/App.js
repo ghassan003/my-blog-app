@@ -119,6 +119,8 @@ import Dashboard from './Dashboard';
 import Setup from './Setup';
 import LoginPage from './LoginPage';
 import PrivateRoute from './PrivateRoute';
+import UserWebManagement from './UserWebManagement'; // Adjust the path as needed
+
 import NotificationForm from './NotificationForm'; // Import the NotificationForm component
 
 const App = () => {
@@ -132,6 +134,8 @@ const App = () => {
         <Route path="/add-user" element={<PrivateRoute element={<AddUserForm />} />} />
         <Route path="/edit-user/:id" element={<PrivateRoute element={<EditUser />} />} />
         <Route path="/payment-confirmation" element={<PrivateRoute element={<PaymentConfirmationPage />} />} />
+        <Route path="/user-management" element={<PrivateRoute element={<UserWebManagement />} />} />
+        
         <Route path="/blog" element={<PrivateRoute element={<BlogPage />} />} />
         <Route path="/setup" element={<Setup />} />
         <Route path="/notification" element={<NotificationForm />} /> Add the NotificationForm route

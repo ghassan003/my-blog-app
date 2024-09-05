@@ -200,10 +200,10 @@ const Dashboard = () => {
                 </div>
                 <div className="card-body bg-white">
                   <div className="row">
-                    <DashboardCard title="Total Posts" value={totalPosts} />
-                    <DashboardCard title="Total Users" value={totalUsers} />
-                    <DashboardCard title="Paid Users" value={paidUsers} bgClass="bg-success" />
-                    <DashboardCard title="Unpaid Users" value={unpaidUsers} bgClass="bg-danger" />
+                    <DashboardCard title="Total Member" value={totalPosts} />
+                    <DashboardCard title="Total Member" value={totalUsers} />
+                    <DashboardCard title="Paid Member" value={paidUsers} bgClass="bg-success" />
+                    <DashboardCard title="Unpaid Member" value={unpaidUsers} bgClass="bg-danger" />
                   </div>
                 </div>
               </div>

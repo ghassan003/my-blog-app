@@ -30,7 +30,7 @@ const UserPage = () => {
          
           <Card className="mb-4">
             <Card.Header as="h5" className="bg-primary text-white font-weight-bold">
-            <h2 className="text-center mb-4">User Management</h2>            </Card.Header>
+            <h2 className="text-center mb-4">Member Management</h2>            </Card.Header>
             <Card.Body>
               <div className="table-responsive">
 
