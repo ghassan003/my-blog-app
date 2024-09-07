@@ -1036,17 +1036,18 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Modal, Button, Form } from 'react-bootstrap';
 import SideNav from './SideNav';
+import CountdownLoader from './CountdownLoader'; // Import CountdownLoader
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { db } from './firebase'; // Import your Firestore instance
 import { Timestamp } from 'firebase/firestore';
 
 const PaymentConfirmationPage = () => {
   const [payments, setPayments] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [emailFilter, setEmailFilter] = useState('');
+  
   const [mobileFilter, setMobileFilter] = useState('');
   const [depositedByFilter, setDepositedByFilter] = useState('');
 
@@ -1127,6 +1128,21 @@ const PaymentConfirmationPage = () => {
 
     fetchPayments();
   }, []);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate data fetch with a timeout
+    const timer = setTimeout(() => {
+      setLoading(false); // Set loading to false after data fetch is complete
+    }, 3000); // Adjust the timeout duration to match your data fetching time
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <CountdownLoader />;
+  }
 
   const formatDate = (timestamp) => {
     if (!timestamp) return '';
