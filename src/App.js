@@ -107,6 +107,47 @@
   // src/App.js
 // src/App.js
 
+// import React from 'react';
+// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import BlogPage from './BlogPage';
+// import UserPage from './UserPage';
+// import UserTable from './UserTable';
+// import AddUserForm from './AddUserForm';
+// import EditUser from './EditUser';
+// import PaymentConfirmationPage from './PaymentConfirmationPage';
+// import Dashboard from './Dashboard';
+// import Setup from './Setup';
+// import LoginPage from './LoginPage';
+// import PrivateRoute from './PrivateRoute';
+// import UserWebManagement from './UserWebManagement'; // Adjust the path as needed
+
+// import NotificationForm from './NotificationForm'; // Import the NotificationForm component
+
+// const App = () => {
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/" element={<LoginPage />} />
+//         <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+//         <Route path="/user" element={<PrivateRoute element={<UserPage />} />} />
+//         <Route path="/user-table" element={<PrivateRoute element={<UserTable />} />} />
+//         <Route path="/add-user" element={<PrivateRoute element={<AddUserForm />} />} />
+//         <Route path="/edit-user/:id" element={<PrivateRoute element={<EditUser />} />} />
+//         <Route path="/payment-confirmation" element={<PrivateRoute element={<PaymentConfirmationPage />} />} />
+//         <Route path="/user-management" element={<PrivateRoute element={<UserWebManagement />} />} />
+        
+//         <Route path="/blog" element={<PrivateRoute element={<BlogPage />} />} />
+//         <Route path="/setup" element={<Setup />} />
+//         <Route path="/notification" element={<NotificationForm />} /> Add the NotificationForm route
+//       </Routes>
+//     </Router>
+//   );
+// };
+
+// export default App;
+
+
+// App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import BlogPage from './BlogPage';
@@ -118,10 +159,9 @@ import PaymentConfirmationPage from './PaymentConfirmationPage';
 import Dashboard from './Dashboard';
 import Setup from './Setup';
 import LoginPage from './LoginPage';
-import PrivateRoute from './PrivateRoute';
 import UserWebManagement from './UserWebManagement'; // Adjust the path as needed
 
-import NotificationForm from './NotificationForm'; // Import the NotificationForm component
+import PrivateRoute from './PrivateRoute';  // Import PrivateRoute
 
 const App = () => {
   return (
@@ -134,11 +174,11 @@ const App = () => {
         <Route path="/add-user" element={<PrivateRoute element={<AddUserForm />} />} />
         <Route path="/edit-user/:id" element={<PrivateRoute element={<EditUser />} />} />
         <Route path="/payment-confirmation" element={<PrivateRoute element={<PaymentConfirmationPage />} />} />
+        
         <Route path="/user-management" element={<PrivateRoute element={<UserWebManagement />} />} />
         
         <Route path="/blog" element={<PrivateRoute element={<BlogPage />} />} />
         <Route path="/setup" element={<Setup />} />
-        <Route path="/notification" element={<NotificationForm />} /> Add the NotificationForm route
       </Routes>
     </Router>
   );

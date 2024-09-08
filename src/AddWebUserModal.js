@@ -1,38 +1,59 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { db, auth } from './firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-const WebUserTableCard = ({ onAddUser }) => {
+const AddWebUserModal = ({ onAddUser }) => {
   const [show, setShow] = useState(false);
-  const [newUser, setNewUser] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    role: '',
-    status: ''
-  });
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [role, setRole] = useState('User');
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState('Active');
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewUser({ ...newUser, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (onAddUser) {
-      onAddUser(newUser);
-      setNewUser({
-        name: '',
-        email: '',
-        phone: '',
-        role: '',
-        status: ''
+
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Create user in Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Add additional user data to Firestore (without storing the password)
+      const docRef = await addDoc(collection(db, 'webUsers'), {
+        uid: user.uid, // Store the user ID from Firebase Auth
+        name,
+        email,
+        phone,
+        role,
+        password,
+        status,
       });
+
+      console.log('User added with ID: ', docRef.id);
+
+      // Optionally pass the user data to the parent component
+      onAddUser({ name, email, phone, role, status });
+
       handleClose();
-    } else {
-      console.error('onAddUser is not defined');
+    } catch (error) {
+      console.error('Error adding user: ', error);
+      alert('Failed to add user');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,62 +65,82 @@ const WebUserTableCard = ({ onAddUser }) => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New User</Modal.Title>
+          <Modal.Title>Add Web User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formName">
+            <Form.Group controlId="formName">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
-                value={newUser.name}
-                onChange={handleChange}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Enter name"
+                required
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formEmail">
+
+            <Form.Group controlId="formEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
-                name="email"
-                value={newUser.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter email"
+                required
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formPhone">
+
+            <Form.Group controlId="formPhone">
               <Form.Label>Phone</Form.Label>
               <Form.Control
                 type="text"
-                name="phone"
-                value={newUser.phone}
-                onChange={handleChange}
-                placeholder="Enter phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter phone"
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formRole">
+
+            <Form.Group controlId="formRole">
               <Form.Label>Role</Form.Label>
               <Form.Control
-                type="text"
-                name="role"
-                value={newUser.role}
-                onChange={handleChange}
-                placeholder="Enter role"
+                as="select"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              >
+                <option>Admin</option>
+                <option>User</option>
+                <option>Blog Writer</option>
+                <option>Payment Checker</option>
+              </Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                required
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formStatus">
+
+            <Form.Group controlId="formStatus">
               <Form.Label>Status</Form.Label>
               <Form.Control
-                type="text"
-                name="status"
-                value={newUser.status}
-                onChange={handleChange}
-                placeholder="Enter status"
-              />
+                as="select"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </Form.Control>
             </Form.Group>
-            <Button variant="primary" type="submit">
-              Add User
+
+            <Button variant="primary" type="submit" disabled={loading}>
+              {loading ? 'Adding User...' : 'Add User'}
             </Button>
           </Form>
         </Modal.Body>
@@ -108,4 +149,4 @@ const WebUserTableCard = ({ onAddUser }) => {
   );
 };
 
-export default WebUserTableCard;
+export default AddWebUserModal;

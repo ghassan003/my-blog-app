@@ -1128,7 +1128,7 @@ const PaymentConfirmationPage = () => {
 
     fetchPayments();
   }, []);
-
+// setInterval(()=>{fetchPayments();},1000000)
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

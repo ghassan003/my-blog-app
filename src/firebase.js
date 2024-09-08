@@ -80,12 +80,12 @@
 // export { db, storage, messaging };
 //////////////////////////////////////////////////////////////
 // src/firebase.js
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+import { getAuth } from 'firebase/auth';
 
-// Your Firebase configuration
+
 const firebaseConfig = {
   apiKey: "AIzaSyDpkbiDEIXqPSOu9_CUj_mRdxTYMAAdlSU",
   authDomain: "blogapp-fce07.firebaseapp.com",
@@ -94,18 +94,14 @@ const firebaseConfig = {
   messagingSenderId: "868819087586",
   appId: "1:868819087586:web:2ebc5625ae62b225e0eebb",
   measurementId: "G-QLC817XKEM"
-
-
-
-  
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore, Storage, and Messaging
+// Initialize services
 const db = getFirestore(app);
 const storage = getStorage(app);
-const messaging = getMessaging(app);
+const auth = getAuth(app);
 
-export { db, storage, messaging, getToken, onMessage };
+export { db, auth, storage };

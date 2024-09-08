@@ -18,6 +18,20 @@ const BlogPostTable = ({ posts }) => {
   const [editPost, setEditPost] = useState(null); // State for post being edited
   const [newImage, setNewImage] = useState(null); // State to handle new image upload
   const [loading, setLoading] = useState(false); // Loading state
+  const [role,setRole]=useState(null)
+ 
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    console.log("localStorage content in SideNav:", localStorage);
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      console.log("Parsed user data:", parsedData);
+      setRole(parsedData.role); // Set role from localStorage
+
+    } else {
+      console.log("No user data found in localStorage");
+    }
+  }, []);
 
   useEffect(() => {
     const filterPosts = () => {
@@ -134,6 +148,7 @@ const BlogPostTable = ({ posts }) => {
 
   return (
     <div className="mb-4">
+      
       <div className="mb-3">
         <label htmlFor="categoryFilter" className="form-label">Filter by Category</label>
         <select
@@ -189,9 +204,11 @@ const BlogPostTable = ({ posts }) => {
                     <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditPost(post)}>
                       Edit
                     </button>
-                    <button className="btn btn-danger btn-sm" onClick={() => handleShowDeleteConfirm(post)}>
+
+                    {role!='Blog Writer'&&<button className="btn btn-danger btn-sm" onClick={() => handleShowDeleteConfirm(post)}>
                       Delete
-                    </button>
+                    </button>}
+
                   </td>
                 </tr>
               </React.Fragment>
