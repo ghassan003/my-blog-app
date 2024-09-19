@@ -112,6 +112,8 @@ const BankDataManager = () => {
     <div>
        <h3 className="text-center">Bank Data Manager</h3>
       <Button variant="primary" onClick={handleAdd} className="mb-3">Add New Bank</Button>
+
+      
       <Table striped bordered hover>
         <thead>
           <tr>

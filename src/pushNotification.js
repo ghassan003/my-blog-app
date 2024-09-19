@@ -6,7 +6,7 @@ import { Card } from 'react-bootstrap'; // Import Card component from React-Boot
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
 import './UserPage.css'; // Ensure you have a CSS file for styling
 
-const UserPage = () => {
+const PushNotification = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,13 +30,10 @@ const UserPage = () => {
          
           <Card className="mb-4">
             <Card.Header as="h5" className="bg-primary text-white font-weight-bold">
-        {    <h2 className="text-center mb-4">Member Management</h2>  }          </Card.Header>
+            <h2 className="text-center mb-4">Member Management</h2>            </Card.Header>
             <Card.Body>
-              <div className="table-responsive">
-
-
-                
-                <UserTable /> {/* Render the UserTable component */}
+              <div className="table-responsive">                
+                <UserTable compType="push-not"/> {/* Render the UserTable component */}
               </div>
             </Card.Body>
           </Card>
@@ -46,4 +43,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default PushNotification;

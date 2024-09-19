@@ -160,10 +160,13 @@ import Dashboard from './Dashboard';
 import Setup from './Setup';
 import LoginPage from './LoginPage';
 import UserWebManagement from './UserWebManagement'; // Adjust the path as needed
+import JobManagement from './JobManagement'; // Import Job Management
+import PushNotification from './pushNotification';
 
 import PrivateRoute from './PrivateRoute';  // Import PrivateRoute
 
 const App = () => {
+ 
   return (
     <Router>
       <Routes>
@@ -179,6 +182,10 @@ const App = () => {
         
         <Route path="/blog" element={<PrivateRoute element={<BlogPage />} />} />
         <Route path="/setup" element={<Setup />} />
+
+        <Route path="/job-management" element={<PrivateRoute element={<JobManagement />} />} /> {/* New Route */}
+        <Route path="/push-notfication" element={<PrivateRoute element={<PushNotification />} />} />
+
       </Routes>
     </Router>
   );
