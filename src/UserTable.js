@@ -4,7 +4,7 @@ import {
   getDocs,
   deleteDoc,
   doc,
-  updateDoc,
+  
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -96,19 +96,19 @@ const UserTable = ({ compType }) => {
     setSelectedUserId(null);
   };
 
-  const handlePaymentStatusChange = async (id, newStatus) => {
-    try {
-      await updateDoc(doc(db, "users", id), { paymentStatus: newStatus });
-      setUsers(
-        users.map((user) =>
-          user.id === id ? { ...user, paymentStatus: newStatus } : user
-        )
-      );
-      toast.success("Payment status updated successfully");
-    } catch (error) {
-      toast.error("Error updating payment status: " + error.message);
-    }
-  };
+  // const handlePaymentStatusChange = async (id, newStatus) => {
+  //   try {
+  //     await updateDoc(doc(db, "users", id), { paymentStatus: newStatus });
+  //     setUsers(
+  //       users.map((user) =>
+  //         user.id === id ? { ...user, paymentStatus: newStatus } : user
+  //       )
+  //     );
+  //     toast.success("Payment status updated successfully");
+  //   } catch (error) {
+  //     toast.error("Error updating payment status: " + error.message);
+  //   }
+  // };
 
   // Filter function
   const applyFilters = useCallback(() => {
@@ -338,9 +338,10 @@ const UserTable = ({ compType }) => {
               <th>Email</th>
               <th>Batch</th>
               <th>Profession</th>
-              <th>Educational Background</th>
-              {compType !== "push-not" && <th>Photo</th>}
-              {compType !== "push-not" && <th>Payment Status</th>}
+              <th>Educational Background</th>          
+
+              {/* {compType !== "push-not" && <th>Photo</th>}
+              {compType !== "push-not" && <th>Payment Status</th>} */}
               {compType !== "push-not" && <th>Actions</th>}
             </tr>
           </thead>
@@ -353,7 +354,7 @@ const UserTable = ({ compType }) => {
                 <td>{user.batch}</td>
                 <td>{user.profession}</td>
                 <td>{user.education}</td>
-                <td>
+                {/* <td>
                   {user.photo && (
                     <img
                       src={user.photo}
@@ -365,8 +366,8 @@ const UserTable = ({ compType }) => {
                       }}
                     />
                   )}
-                </td>
-                {compType !== "push-not" && (
+                </td> */}
+                {/* {compType !== "push-not" && (
                   <td>
                     <select
                       className="form-select"
@@ -379,7 +380,7 @@ const UserTable = ({ compType }) => {
                       <option value="Unpaid">Unpaid</option>
                     </select>
                   </td>
-                )}
+                )} */}
                 {compType !== "push-not" && (
                   <td>
                     <button

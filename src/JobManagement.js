@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Button } from "react-bootstrap"; // Import Button here
+import { Container, Card, } from "react-bootstrap"; // Import Button here
 import SideNav from "./SideNav"; // Adjust the path as needed
 import JobTable from "./JobTable";
 import JobForm from "./JobForm";
@@ -11,6 +11,7 @@ const JobManagement = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+
   useEffect(() => {
     const fetchData = async () => {
       const querySnapshot = await getDocs(collection(db, "jobs"));
@@ -20,21 +21,27 @@ const JobManagement = () => {
     fetchData();
   }, []);
 
-  const handleAdd = () => {
-    setSelectedJob({
-      title: "",
-      companyName: "",
-      location: "",
-      status: "Active",
-      jobIcon: "",
-    });
-    setShowModal(true);
-  };
+
+  
+
+  // const handleAdd = () => {
+  //   setSelectedJob({
+  //     title: "",
+  //     companyName: "",
+  //     location: "",
+  //     status: "Active",
+  //     jobIcon: "",
+  //   });
+  //   setShowModal(true);
+  // };
 
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, "jobs", id));
     setJobs(jobs.filter((job) => job.id !== id));
   };
+
+
+  
 
   const handleToggleStatus = async (job) => {
     const newStatus = job.status === "Active" ? "Disabled" : "Active";
@@ -55,12 +62,7 @@ const JobManagement = () => {
               <h3 className="text-center">Job Management</h3>
             </Card.Header>
             <Card.Body>
-              <div className="mb-3 text-end">
-                <Button variant="primary" onClick={handleAdd}>
-                  Add New Job
-                </Button>
-              </div>
-              
+
               <JobTable
                 jobs={jobs}
                 handleDelete={handleDelete}

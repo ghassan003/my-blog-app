@@ -162,6 +162,8 @@ import LoginPage from './LoginPage';
 import UserWebManagement from './UserWebManagement'; // Adjust the path as needed
 import JobManagement from './JobManagement'; // Import Job Management
 import PushNotification from './pushNotification';
+import JobPage from './JobPage'; // Import the new JobForm page
+
 
 import PrivateRoute from './PrivateRoute';  // Import PrivateRoute
 
@@ -185,6 +187,11 @@ const App = () => {
 
         <Route path="/job-management" element={<PrivateRoute element={<JobManagement />} />} /> {/* New Route */}
         <Route path="/push-notfication" element={<PrivateRoute element={<PushNotification />} />} />
+        
+        <Route path="/jobs" element={<PrivateRoute element={<JobPage />} />} /> {/* New Route */}
+
+
+
 
       </Routes>
     </Router>

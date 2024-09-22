@@ -4,8 +4,15 @@
   height: 95%; /* Increase the height to 95% */
 }
 
+
+
 .custom-modal .modal-content {
-  height: 100%; /* Ensure content takes the full height */
+  height: 85%; /* Ensure content takes the full height */
+}
+
+
+.custom-modal {
+  max-width: 1400px; /* Double the default width (600px is typical) */
 }
 
 .custom-modal .modal-body {

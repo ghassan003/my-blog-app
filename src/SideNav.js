@@ -311,6 +311,17 @@ const SideNav = () => {
                 User Management
               </Link>
 
+              <Link
+                to="/jobs"
+                className={`list-group-item list-group-item-action ${
+                  location.pathname === "/jobs" ? "active" : ""
+                }`}
+              >
+                <i className="bi bi-briefcase me-2"></i>
+                Add New Job
+              </Link>
+
+
               {/* Add the Job Management button here */}
               <Link
                 to="/job-management"
@@ -383,7 +394,7 @@ const SideNav = () => {
             </>
           )}
 
-          <Link
+          {/* <Link
             to="/push-notfication"
             className={`list-group-item list-group-item-action ${
               location.pathname === "/push-notfication" ? "active" : ""
@@ -391,7 +402,7 @@ const SideNav = () => {
           >
             <i className="bi bi-file-earmark-text me-2"></i>
             Push Notfication
-          </Link>
+          </Link> */}
 
           {/* Logout Button */}
           <button
