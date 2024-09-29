@@ -11,7 +11,7 @@ const JobPage = () => {
   const [showPopup, setShowPopup] = useState({ show: false, message: "" });
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedQualifications, setSelectedQualifications] = useState([]);
-  const [selectedFields, setSelectedFields] = useState([]);  
+  const [selectedFields, setSelectedFields] = useState([]);
   const fields = [
     "Accounting And Finance",
     "Animal Science",
@@ -225,16 +225,10 @@ const JobPage = () => {
   //     // setJobIconUrl(uploadedFileUrl);
   //   };
 
-
   const handleSave = async (e) => {
     e.preventDefault();
     if (loading) return;
-
-
-
-    
     setLoading(true);
-
     const jobData = {
       title: selectedJob.title,
       qualification: selectedQualifications.join(", ") || [], // Join the qualifications array
@@ -260,12 +254,11 @@ const JobPage = () => {
       email: selectedJob.email,
       city: selectedJob.city,
       howToApply: selectedJob.howToApply,
-      includeReference: selectedJob.includeReference,
+      includeReference: selectedJob.includeReference || "",
       source: selectedJob.source,
       status: selectedJob.status,
       jobIcon: jobIconUrl,
     };
-
 
     try {
       await addDoc(collection(db, "jobs"), jobData);
@@ -644,9 +637,7 @@ const JobPage = () => {
                       paddingBottom: "10px",
                     }}
                   >
-                    <h2 style={{ textAlign: "center", margin: 0 }}>
-                      Job Date
-                    </h2>
+                    <h2 style={{ textAlign: "center", margin: 0 }}>Job Date</h2>
                   </Col>
                   <Col md={4}>
                     <Form.Group controlId="formPostDate">
@@ -801,7 +792,7 @@ const JobPage = () => {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-
+                  {/* 
                   <Col md={4}>
                     <Form.Group controlId="formIncludeReference">
                       <Form.Check
@@ -811,6 +802,19 @@ const JobPage = () => {
                         checked={selectedJob?.includeReference || false}
                         onChange={handleInputChange}
                       />
+                    </Form.Group>
+                  </Col> */}
+                  <Col md={4}>
+                    <Form.Group controlId="formIncludeReference">
+                      <Form.Label>Include Reference</Form.Label>
+                      <Form.Select
+                        name="includeReference"
+                        value={selectedJob?.includeReference || "No"}
+                        onChange={handleInputChange}
+                      >
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </Form.Select>
                     </Form.Group>
                   </Col>
 

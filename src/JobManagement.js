@@ -41,16 +41,26 @@ const JobManagement = () => {
   };
 
 
+  const handleViewDetails = (jobId) => {
+    console.log("Viewing details for job ID:", jobId);
+    // Implement logic to show job details (e.g., redirect or modal)
+  }
   
 
   const handleToggleStatus = async (job) => {
-    const newStatus = job.status === "Active" ? "Disabled" : "Active";
-    const jobRef = doc(db, "jobs", job.id);
-    await updateDoc(jobRef, { status: newStatus });
-
-    const querySnapshot = await getDocs(collection(db, "jobs"));
-    setJobs(querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    const jobRef = doc(db, 'jobs', job.id);
+    await updateDoc(jobRef, { status: job.status === 'Active' ? 'Inactive' : 'Active' });
+    setJobs(jobs.map(j => j.id === job.id ? { ...j, status: job.status === 'Active' ? 'Inactive' : 'Active' } : j));
   };
+
+  // const handleToggleStatus = async (job) => {
+  //   const newStatus = job.status === "Active" ? "Disabled" : "Active";
+  //   const jobRef = doc(db, "jobs", job.id);
+  //   await updateDoc(jobRef, { status: newStatus });
+
+  //   const querySnapshot = await getDocs(collection(db, "jobs"));
+  //   setJobs(querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+  // };
 
   return (
     <div className="d-flex">
@@ -64,11 +74,14 @@ const JobManagement = () => {
             <Card.Body>
 
               <JobTable
+                //jobs={jobs}
+                // handleDelete={handleDelete}
+                // handleToggleStatus={handleToggleStatus}
                 jobs={jobs}
                 handleDelete={handleDelete}
                 handleToggleStatus={handleToggleStatus}
+                handleViewDetails={handleViewDetails}
               />
-
               <JobForm
                 selectedJob={selectedJob}
                 setSelectedJob={setSelectedJob}
