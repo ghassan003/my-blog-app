@@ -49,7 +49,7 @@ const JobDetails = () => {
                 </tr>
                 <tr>
                   <td><strong>Location:</strong></td>
-                  <td>{jobDetails.location}</td>
+                  <td>{jobDetails.jobLocation}</td>
                 </tr>
                 <tr>
                   <td><strong>Status:</strong></td>

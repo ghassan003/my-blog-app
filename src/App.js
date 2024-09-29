@@ -164,6 +164,7 @@ import JobManagement from './JobManagement'; // Import Job Management
 import PushNotification from './pushNotification';
 import JobPage from './JobPage'; // Import the new JobForm page
 import JobDetails from './JobDetails';
+import EditJob from './EditJob';    // The new EditJob component
 
 
 import PrivateRoute from './PrivateRoute';  // Import PrivateRoute
@@ -192,6 +193,9 @@ const App = () => {
         <Route path="/jobs" element={<PrivateRoute element={<JobPage />} />} /> {/* New Route */}
 
         <Route path="/jobs/:jobId" element={<PrivateRoute element={<JobDetails />} />} /> {/* New Route */}
+
+
+        <Route path="/edit-job/:jobId" element={<PrivateRoute element={<EditJob />} />} /> {/* New Route */}
 
 
 

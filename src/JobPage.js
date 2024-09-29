@@ -121,15 +121,7 @@ const JobPage = () => {
     "Surveying",
     "Urban and regional studies",
   ];
-  // const experiences = [
-  //   "0 years",
-  //   "1-2 years",
-  //   "3-4 years",
-  //   "5-7 years",
-  //   "7-10 years",
-  //   "Above 10 years",
-  // ];
-  const jobLocation = [
+   const jobLocation = [
     "Addis Ababa",
     "Afar",
     "Amhara",
@@ -145,14 +137,7 @@ const JobPage = () => {
     "Other", //Other Must be at Last Because of Add or Edit Screen
   ];
 
-  // const jobLocation = [
-  //   "New York",
-  //   "Los Angeles",
-  //   "Chicago",
-  //   "Houston",
-  //   "Phoenix",
-  //   // Add more locations as needed
-  // ];
+ 
   const qualifications = [
     "PHD",
     "MSC",
@@ -458,38 +443,6 @@ const JobPage = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-                {/* Field */}
-                {/* 
-                <Row className="mb-11">
-                  <Col md={12}>
-                    <Form.Group controlId="formField">
-                      <Form.Label>Field</Form.Label>
-
-                      <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          {selectedFields.length > 0
-                            ? selectedFields.join(", ")
-                            : "Select Fields"}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          {fields.map((field, index) => (
-                            <Form.Check
-                              key={index}
-                              type="checkbox"
-                              label={field}
-                              value={field}
-                              checked={selectedFields.includes(field)}
-                              onChange={handleFieldCheckboxChange}
-                              onClick={(e) => e.stopPropagation()} // Prevent closing the dropdown on checkbox click
-                            />
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </Form.Group>
-                  </Col>
-                </Row> */}
-
                 {/* Company, Salary, and Job Location */}
                 <Row
                   className="mb-4"
@@ -792,18 +745,6 @@ const JobPage = () => {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                  {/* 
-                  <Col md={4}>
-                    <Form.Group controlId="formIncludeReference">
-                      <Form.Check
-                        type="checkbox"
-                        label="Include Reference"
-                        name="includeReference"
-                        checked={selectedJob?.includeReference || false}
-                        onChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  </Col> */}
                   <Col md={4}>
                     <Form.Group controlId="formIncludeReference">
                       <Form.Label>Include Reference</Form.Label>
@@ -833,13 +774,6 @@ const JobPage = () => {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-
-                  {/* <Col md={4}>
-                    <Form.Group controlId="formJobIcon">
-                      <Form.Label>Job Icon</Form.Label>
-                      <Form.Control type="file" onChange={handleFileChange} />
-                    </Form.Group>
-                  </Col> */}
                 </Row>
                 <Button type="submit" variant="primary" disabled={loading}>
                   {loading ? "Saving..." : "Save Job"}
