@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Modal, Form, Alert } from 'react-bootstrap';
+import { Button, Table, Modal, Form, Alert, Container, Row, Col, Card } from 'react-bootstrap';
 import { collection, getDocs, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './firebase'; // Adjust the path as needed
@@ -109,48 +109,65 @@ const BankDataManager = () => {
   const handleClosePopup = () => setShowPopup({ show: false, message: '' });
 
   return (
-    <div>
-       <h3 className="text-center">Bank Data Manager</h3>
-      <Button variant="primary" onClick={handleAdd} className="mb-3">Add New Bank</Button>
-
-      
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Bank Name</th>
-            <th>Account Title</th>
-            <th>Account Number</th>
-            <th>Bank Icon</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {banks.map(bank => (
-            <tr key={bank.id}>
-              <td>{bank.name}</td>
-              <td>{bank.accountTitle}</td>
-              <td>{bank.accountNumber}</td>
-              <td>
-                {bank.bankIcon && <img src={bank.bankIcon} alt="Bank Icon" style={{ width: '50px', height: '50px' }} />}
-              </td>
-              <td>{bank.status}</td>
-              <td>
-                <Button variant="danger" onClick={() => handleDelete(bank.id)}>Delete</Button>
-                <Button
-                  variant={bank.status === 'Active' ? 'secondary' : 'success'}
-                  onClick={() => handleToggleStatus(bank)}
-                >
-                  {bank.status === 'Active' ? 'Disable' : 'Enable'}
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+    <Container fluid className="py-4">
+      <Row className="mb-4">
+        <Col>
+          <h3 className="text-center bg-secondary text-white py-2 rounded">Bank Data Manager</h3>
+        </Col>
+      </Row>
+      <Row className="mb-3">
+        <Col>
+          <Button variant="primary" onClick={handleAdd}>Add New Bank</Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <div className="table-responsive">
+            <Table striped bordered hover responsive>
+              <thead className="bg-light">
+                <tr>
+                  <th>Bank Name</th>
+                  <th>Account Title</th>
+                  <th>Account Number</th>
+                  <th>Bank Icon</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {banks.map(bank => (
+                  <tr key={bank.id}>
+                    <td>{bank.name}</td>
+                    <td>{bank.accountTitle}</td>
+                    <td>{bank.accountNumber}</td>
+                    <td>
+                      {bank.bankIcon && <img src={bank.bankIcon} alt="Bank Icon" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />}
+                    </td>
+                    <td>
+                      <span className={`badge ${bank.status === 'Active' ? 'bg-success' : 'bg-danger'}`}>
+                        {bank.status}
+                      </span>
+                    </td>
+                    <td>
+                      <Button variant="danger" size="sm" className="me-2 mb-2 mb-md-0" onClick={() => handleDelete(bank.id)}>Delete</Button>
+                      <Button
+                        variant={bank.status === 'Active' ? 'secondary' : 'success'}
+                        size="sm"
+                        onClick={() => handleToggleStatus(bank)}
+                      >
+                        {bank.status === 'Active' ? 'Disable' : 'Enable'}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Col>
+      </Row>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="bg-light">
           <Modal.Title>Add Bank</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -163,6 +180,7 @@ const BankDataManager = () => {
                 value={selectedBank?.name || ''}
                 onChange={handleInputChange}
                 placeholder="Enter bank name"
+                required
               />
             </Form.Group>
 
@@ -174,6 +192,7 @@ const BankDataManager = () => {
                 value={selectedBank?.accountTitle || ''}
                 onChange={handleInputChange}
                 placeholder="Enter account title"
+                required
               />
             </Form.Group>
 
@@ -185,6 +204,7 @@ const BankDataManager = () => {
                 value={selectedBank?.accountNumber || ''}
                 onChange={handleInputChange}
                 placeholder="Enter account number"
+                required
               />
             </Form.Group>
 
@@ -193,11 +213,16 @@ const BankDataManager = () => {
               <Form.Control
                 type="file"
                 onChange={handleIconUpload}
+                accept=".png"
+                required
               />
-              {bankIconUrl && <img src={bankIconUrl} alt="Bank Icon Preview" style={{ width: '100px', height: '100px', marginTop: '10px' }} />}
+              {bankIconUrl && (
+                <Card className="mt-2" style={{ width: '100px' }}>
+                  <Card.Img variant="top" src={bankIconUrl} alt="Bank Icon Preview" />
+                </Card>
+              )}
             </Form.Group>
 
-            {/* Popup message for invalid file type */}
             {showPopup.show && (
               <Alert variant="danger" onClose={handleClosePopup} dismissible>
                 {showPopup.message}
@@ -210,6 +235,7 @@ const BankDataManager = () => {
                 name="status"
                 value={selectedBank?.status || ''}
                 onChange={handleInputChange}
+                required
               >
                 <option value="Active">Active</option>
                 <option value="Disabled">Disabled</option>
@@ -222,7 +248,7 @@ const BankDataManager = () => {
           </Form>
         </Modal.Body>
       </Modal>
-    </div>
+    </Container>
   );
 };
 

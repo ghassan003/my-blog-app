@@ -1,256 +1,38 @@
-// import React, { useEffect, useState } from 'react';
-// import { Button, Table, Modal, Form } from 'react-bootstrap';
-// // //import { 
-// // , getDocs, doc, updateDoc, deleteDoc, addDoc } from 'firebase/firestore';
-// import { db } from './firebase'; // Adjust the path as needed
-
-// import { collection, getDocs, doc, updateDoc,  addDoc } from 'firebase/firestore';
-
-// const SetupDataManager = () => {
-//   const [setupData, setSetupData] = useState([]);
-//   const [selectedData, setSelectedData] = useState(null);
-//   const [showModal, setShowModal] = useState(false);
-//   const [editMode, setEditMode] = useState(false);
-//   const [eventBar, setEventBar] = useState('');
-//   const [contactUs, setContactUs] = useState('');
-//   const [partnersSponsors, setPartnersSponsors] = useState('');
-//   const [visitWebsite, setVisitWebsite] = useState('');
-//   const [status, setStatus] = useState('Active');
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const querySnapshot = await getDocs(collection(db, 'setup_data'));
-//       setSetupData(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   const handleEdit = (data) => {
-//     setSelectedData(data);
-//     setEventBar(data.eventBar || '');
-//     setContactUs(data.contactUs || '');
-//     setPartnersSponsors(data.partnersSponsors || '');
-//     setVisitWebsite(data.visitWebsite || '');
-//     setStatus(data.status || 'Active');
-//     setEditMode(true);
-//     setShowModal(true);
-//   };
-
-//   // const handleAdd = () => {
-//   //   setSelectedData({
-//   //     eventBar: '',
-//   //     contactUs: '',
-//   //     partnersSponsors: '',
-//   //     visitWebsite: '',
-//   //     status: 'Active'
-//   //   });
-//   //   setEventBar('');
-//   //   setContactUs('');
-//   //   setPartnersSponsors('');
-//   //   setVisitWebsite('');
-//   //   setStatus('Active');
-//   //   setEditMode(false);
-//   //   setShowModal(true);
-//   // };
-
-//   // const handleDelete = async (id) => {
-//   //   await deleteDoc(doc(db, 'setup_data', id));
-//   //   setSetupData(setupData.filter(data => data.id !== id));
-//   // };
-
-//   const handleToggleStatus = async (data) => {
-//     const newStatus = data.status === 'Active' ? 'Disabled' : 'Active';
-//     const dataRef = doc(db, 'setup_data', data.id);
-//     await updateDoc(dataRef, { status: newStatus });
-
-//     // Refresh the data list
-//     const querySnapshot = await getDocs(collection(db, 'setup_data'));
-//     setSetupData(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-//   };
-
-//   const handleSave = async (e) => {
-//     e.preventDefault();
-//     const newData = {
-//       eventBar,
-//       contactUs,
-//       partnersSponsors,
-//       visitWebsite,
-//       status
-//     };
-
-//     if (editMode) {
-//       const dataRef = doc(db, 'setup_data', selectedData.id);
-//       await updateDoc(dataRef, newData);
-//     } else {
-//       await addDoc(collection(db, 'setup_data'), newData);
-//     }
-    
-//     const querySnapshot = await getDocs(collection(db, 'setup_data'));
-//     setSetupData(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-//     setShowModal(false);
-//     setSelectedData(null);
-//   };
-
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     if (name === 'eventBar') setEventBar(value);
-//     if (name === 'contactUs') setContactUs(value);
-//     if (name === 'partnersSponsors') setPartnersSponsors(value);
-//     if (name === 'visitWebsite') setVisitWebsite(value);
-//     if (name === 'status') setStatus(value);
-//   };
-
-//   return (
-//     <div>
-      
-//       <h3 className="text-center">Setup Data Manager</h3>
-//       {/* <Button variant="primary" onClick={handleAdd} className="mb-3">Add New Setup Data</Button> */}
-//       <Table striped bordered hover>
-//         <thead>
-//           <tr>
-//             <th>Event Bar</th>
-//             <th>Contact Us</th>
-//             <th>Partners/Sponsors</th>
-//             <th>Visit Website</th>
-//             <th>Status</th>
-//             <th>Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {setupData.map(data => (
-//             <tr key={data.id}>
-//               <td>{data.eventBar}</td>
-//               <td>{data.contactUs}</td>
-//               <td>{data.partnersSponsors}</td>
-//               <td>{data.visitWebsite}</td>
-//               <td>{data.status}</td>
-//               <td>
-//                 <Button variant="warning" onClick={() => handleEdit(data)}>Edit</Button>
-//                 {data.status === 'Active' && (
-//                   <>
-//                     {/* <Button variant="danger" onClick={() => handleDelete(data.id)} className="ms-2">Delete</Button>
-//                     <Button
-//                       variant="secondary"
-//                       onClick={() => handleToggleStatus(data)}
-//                       className="ms-2"
-//                     >
-//                       Disable
-//                     </Button> */}
-//                   </>
-//                 )}
-//                 {data.status === 'Disabled' && (
-//                   <Button 
-//                     variant="success"
-//                     onClick={() => handleToggleStatus(data)}
-//                     className="ms-2"
-//                   >
-//                     Enable
-//                   </Button>
-//                 )}
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </Table>
-
-//       <Modal show={showModal} onHide={() => setShowModal(false)}>
-//         <Modal.Header closeButton>
-//           <Modal.Title>{editMode ? 'Edit Setup Data' : 'Add Setup Data'}</Modal.Title>
-//         </Modal.Header>
-//         <Modal.Body>
-//           <Form onSubmit={handleSave}>
-//             <Form.Group className="mb-3" controlId="formEventBar">
-//               <Form.Label>Event Bar</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 name="eventBar"
-//                 value={eventBar}
-//                 onChange={handleInputChange}
-//                 placeholder="Enter event bar"
-//               />
-//             </Form.Group>
-
-//             <Form.Group className="mb-3" controlId="formContactUs">
-//               <Form.Label>Contact Us</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 name="contactUs"
-//                 value={contactUs}
-//                 onChange={handleInputChange}
-//                 placeholder="Enter contact us info"
-//               />
-//             </Form.Group>
-
-//             <Form.Group className="mb-3" controlId="formPartnersSponsors">
-//               <Form.Label>Partners/Sponsors</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 name="partnersSponsors"
-//                 value={partnersSponsors}
-//                 onChange={handleInputChange}
-//                 placeholder="Enter partners/sponsors"
-//               />
-//             </Form.Group>
-
-//             <Form.Group className="mb-3" controlId="formVisitWebsite">
-//               <Form.Label>Visit Website</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 name="visitWebsite"
-//                 value={visitWebsite}
-//                 onChange={handleInputChange}
-//                 placeholder="Enter website URL"
-//               />
-//             </Form.Group>
-
-//             <Form.Group className="mb-3" controlId="formStatus">
-//               <Form.Label>Status</Form.Label>
-//               <Form.Select
-//                 name="status"
-//                 value={status}
-//                 onChange={handleInputChange}
-//               >
-//                 <option value="Active">Active</option>
-//                 <option value="Disabled">Disabled</option>
-//               </Form.Select>
-//             </Form.Group>
-
-//             <Button variant="primary" type="submit">
-//               Save
-//             </Button>
-//           </Form>
-//         </Modal.Body>
-//       </Modal>
-//     </div>
-//   );
-// };
-
-// export default SetupDataManager;
-
-
-import React, { useEffect, useState } from 'react';
-import { Button, Table, Modal, Form } from 'react-bootstrap';
-import { db } from './firebase'; // Adjust the path as needed
-import { collection, getDocs, doc, updateDoc, addDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from "react";
+import { Button, Table, Modal, Form, Container, Row, Col, Card } from "react-bootstrap";
+import { db } from "./firebase"; // Adjust the path as needed
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  addDoc,
+} from "firebase/firestore";
 
 const SetupDataManager = () => {
   const [setupData, setSetupData] = useState([]);
   const [selectedData, setSelectedData] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [eventBar, setEventBar] = useState('');
-  const [contactUs, setContactUs] = useState('');
-  const [partnersSponsors, setPartnersSponsors] = useState('');
-  const [visitWebsite, setVisitWebsite] = useState('');
-  const [status, setStatus] = useState('Active');
-  const [telegram, setTelegram] = useState('');
-  const [learnMore, setLearnMore] = useState('');
+  const [formData, setFormData] = useState({
+    eventBar: "",
+    contactUs: "",
+    partnersSponsors: "",
+    visitWebsite: "",
+    status: "Active",
+    telegram: "",
+    learnMore: "",
+    paidBar: "",
+    unpaidBar: "",
+    businessLeadPage: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, 'setup_data'));
-      setSetupData(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      const querySnapshot = await getDocs(collection(db, "setup_data"));
+      setSetupData(
+        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      );
     };
 
     fetchData();
@@ -258,215 +40,275 @@ const SetupDataManager = () => {
 
   const handleEdit = (data) => {
     setSelectedData(data);
-    setEventBar(data.eventBar || '');
-    setContactUs(data.contactUs || '');
-    setPartnersSponsors(data.partnersSponsors || '');
-    setVisitWebsite(data.visitWebsite || '');
-    setStatus(data.status || 'Active');
-    setTelegram(data.telegram || '');
-    setLearnMore(data.learnMore || '');
+    setFormData({
+      eventBar: data.eventBar || "",
+      contactUs: data.contactUs || "",
+      partnersSponsors: data.partnersSponsors || "",
+      visitWebsite: data.visitWebsite || "",
+      status: data.status || "Active",
+      telegram: data.telegram || "",
+      learnMore: data.learnMore || "",
+      paidBar: data.paidBar || "",
+      unpaidBar: data.unpaidBar || "",
+      businessLeadPage: data.businessLeadPage || "",
+    });
     setEditMode(true);
     setShowModal(true);
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const newData = {
-      eventBar,
-      contactUs,
-      partnersSponsors,
-      visitWebsite,
-      status,
-      telegram,
-      learnMore
-    };
-  
     try {
       if (editMode) {
-        // Ensure selectedData and selectedData.id are not null
         if (!selectedData || !selectedData.id) {
-          throw new Error('No selected data available for update.');
+          throw new Error("No selected data available for update.");
         }
-        const dataRef = doc(db, 'setup_data', selectedData.id);
-        await updateDoc(dataRef, newData);
+        const dataRef = doc(db, "setup_data", selectedData.id);
+        await updateDoc(dataRef, formData);
       } else {
-        await addDoc(collection(db, 'setup_data'), newData);
+        await addDoc(collection(db, "setup_data"), formData);
       }
-      
-      const querySnapshot = await getDocs(collection(db, 'setup_data'));
-      setSetupData(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      const querySnapshot = await getDocs(collection(db, "setup_data"));
+      setSetupData(
+        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      );
       setShowModal(false);
       setSelectedData(null);
     } catch (error) {
-      console.error('Error saving data: ', error);
+      console.error("Error saving data: ", error);
     }
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'eventBar') setEventBar(value);
-    if (name === 'contactUs') setContactUs(value);
-    if (name === 'partnersSponsors') setPartnersSponsors(value);
-    if (name === 'visitWebsite') setVisitWebsite(value);
-    // if (name === 'status') setStatus(value);
-    if (name === 'telegram') setTelegram(value);
-    if (name === 'learnMore') setLearnMore(value);
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleToggleStatus = async (data) => {
-    const newStatus = data.status === 'Active' ? 'Disabled' : 'Active';
-    const dataRef = doc(db, 'setup_data', data.id);
+    const newStatus = data.status === "Active" ? "Disabled" : "Active";
+    const dataRef = doc(db, "setup_data", data.id);
     await updateDoc(dataRef, { status: newStatus });
 
-    // Refresh the data list
-    const querySnapshot = await getDocs(collection(db, 'setup_data'));
-    setSetupData(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    const querySnapshot = await getDocs(collection(db, "setup_data"));
+    setSetupData(
+      querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+    );
   };
 
   return (
-    <div>
-      <h3 className="text-center">Setup Data Manager</h3>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Event Bar</th>
-            <th>Contact Us</th>
-            <th>Partners/Sponsors</th>
-            <th>Visit Website</th>
-            <th>Telegram</th>
-            <th>Learn More</th>
-            {/* <th>Status</th> */}
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {setupData.map(data => (
-            <tr key={data.id}>
-              <td>{data.eventBar}</td>
-              <td>{data.contactUs}</td>
-              <td>{data.partnersSponsors}</td>
-              <td>{data.visitWebsite}</td>
-              <td>{data.telegram}</td>
-              <td>{data.learnMore}</td>
-              {/* <td>{data.status}</td> */}
-              <td>
-                <Button variant="warning" onClick={() => handleEdit(data)}>Edit</Button>
-                {/* {data.status === 'Active' && (
-                  <Button
-                    variant="secondary"
-                    onClick={() => handleToggleStatus(data)}
-                    className="ms-2"
-                  >
-                    Disable
-                  </Button>
-                )} */}
-                {data.status === 'Disabled' && (
-                  <Button 
-                    variant="success"
-                    onClick={() => handleToggleStatus(data)}
-                    className="ms-2"
-                  >
-                    Enable
-                  </Button>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+    <Container fluid className="py-4">
+      <Row className="mb-4">
+        <Col>
+          <h3 className="text-center bg-secondary text-white py-2 rounded">
+            Setup Data Manager
+          </h3>
+        </Col>
+      </Row>
+      {setupData.map((data) => (
+        <Card key={data.id} className="mb-4">
+          <Card.Header className="d-flex justify-content-between align-items-center bg-light">
+            <h5 className="mb-0">Setup Data</h5>
+            <div>
+              <Button
+                variant="warning"
+                onClick={() => handleEdit(data)}
+                className="me-2"
+              >
+                Edit
+              </Button>
+              {data.status === "Disabled" && (
+                <Button
+                  variant="success"
+                  onClick={() => handleToggleStatus(data)}
+                >
+                  Enable
+                </Button>
+              )}
+            </div>
+          </Card.Header>
+          <Card.Body>
+            <Table responsive striped bordered hover>
+              <tbody>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Paid Bar</th>
+                  <td>{data.paidBar}</td>
+                </tr>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Un-paid Bar</th>
+                  <td>{data.unpaidBar}</td>
+                </tr>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Business Lead</th>
+                  <td>{data.businessLeadPage}</td>
+                </tr>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Event Bar</th>
+                  <td>{data.eventBar}</td>
+                </tr>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Contact Us</th>
+                  <td>{data.contactUs}</td>
+                </tr>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Partners/Sponsors</th>
+                  <td>{data.partnersSponsors}</td>
+                </tr>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Visit Website</th>
+                  <td>{data.visitWebsite}</td>
+                </tr>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Telegram</th>
+                  <td>{data.telegram}</td>
+                </tr>
+                <tr>
+                <th style={{ backgroundColor: 'white', color: 'black' }}>Learn More</th>
+                  <td>{data.learnMore}</td>
+                </tr>
+              </tbody>
+            </Table>
+          </Card.Body>
+        </Card>
+      ))}
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>{editMode ? 'Edit Setup Data' : 'Add Setup Data'}</Modal.Title>
+      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+        <Modal.Header closeButton className="bg-light">
+          <Modal.Title>
+            {editMode ? "Edit Setup Data" : "Add Setup Data"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSave}>
-            <Form.Group className="mb-3" controlId="formEventBar">
-              <Form.Label>Event Bar</Form.Label>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formEventBar">
+                  <Form.Label>Event Bar</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="eventBar"
+                    value={formData.eventBar}
+                    onChange={handleInputChange}
+                    placeholder="Enter event bar"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formContactUs">
+                  <Form.Label>Contact Us</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="contactUs"
+                    value={formData.contactUs}
+                    onChange={handleInputChange}
+                    placeholder="Enter contact us info"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formPartnersSponsors">
+                  <Form.Label>Partners/Sponsors</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="partnersSponsors"
+                    value={formData.partnersSponsors}
+                    onChange={handleInputChange}
+                    placeholder="Enter partners/sponsors"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formVisitWebsite">
+                  <Form.Label>Visit Website</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="visitWebsite"
+                    value={formData.visitWebsite}
+                    onChange={handleInputChange}
+                    placeholder="Enter website URL"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formTelegram">
+                  <Form.Label>Telegram</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="telegram"
+                    value={formData.telegram}
+                    onChange={handleInputChange}
+                    placeholder="Enter Telegram handle or link"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formLearnMore">
+                  <Form.Label>Learn More</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="learnMore"
+                    value={formData.learnMore}
+                    onChange={handleInputChange}
+                    placeholder="Enter more info link"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formPaidBar">
+                  <Form.Label>Paid Bar</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="paidBar"
+                    value={formData.paidBar}
+                    onChange={handleInputChange}
+                    placeholder="Enter Paid Bar"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3" controlId="formUnpaidBar">
+                  <Form.Label>Unpaid Bar</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="unpaidBar"
+                    value={formData.unpaidBar}
+                    onChange={handleInputChange}
+                    placeholder="Enter Unpaid Bar"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Form.Group className="mb-3" controlId="formBusinessLeadPage">
+              <Form.Label>Business Lead Page</Form.Label>
               <Form.Control
                 type="text"
-                name="eventBar"
-                value={eventBar}
+                name="businessLeadPage"
+                value={formData.businessLeadPage}
                 onChange={handleInputChange}
-                placeholder="Enter event bar"
+                placeholder="Enter Business Lead Page"
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formContactUs">
-              <Form.Label>Contact Us</Form.Label>
-              <Form.Control
-                type="text"
-                name="contactUs"
-                value={contactUs}
-                onChange={handleInputChange}
-                placeholder="Enter contact us info"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formPartnersSponsors">
-              <Form.Label>Partners/Sponsors</Form.Label>
-              <Form.Control
-                type="text"
-                name="partnersSponsors"
-                value={partnersSponsors}
-                onChange={handleInputChange}
-                placeholder="Enter partners/sponsors"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formVisitWebsite">
-              <Form.Label>Visit Website</Form.Label>
-              <Form.Control
-                type="text"
-                name="visitWebsite"
-                value={visitWebsite}
-                onChange={handleInputChange}
-                placeholder="Enter website URL"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formTelegram">
-              <Form.Label>Telegram</Form.Label>
-              <Form.Control
-                type="text"
-                name="telegram"
-                value={telegram}
-                onChange={handleInputChange}
-                placeholder="Enter Telegram handle or link"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formLearnMore">
-              <Form.Label>Learn More</Form.Label>
-              <Form.Control
-                type="text"
-                name="learnMore"
-                value={learnMore}
-                onChange={handleInputChange}
-                placeholder="Enter Learn More link"
-              />
-            </Form.Group>
-
-            {/* <Form.Group className="mb-3" controlId="formStatus">
-              <Form.Label>Status</Form.Label>
-              <Form.Select
-                name="status"
-                value={status}
-                onChange={handleInputChange}
-              >
-                <option value="Active">Active</option>
-                <option value="Disabled">Disabled</option>
-              </Form.Select>
-            </Form.Group>
- */}
             <Button variant="primary" type="submit">
-              Save
+              Save Changes
             </Button>
           </Form>
         </Modal.Body>
       </Modal>
-    </div>
+    </Container>
   );
 };
 

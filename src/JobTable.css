@@ -1,0 +1,23 @@
+.view-container {
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-shadow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-view, .table-view {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.card-view.fade-enter,
+.table-view.fade-enter {
+  opacity: 0;
+}
+
+.card-view.fade-enter-active,
+.table-view.fade-enter-active {
+  opacity: 1;
+}

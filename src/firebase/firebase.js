@@ -1,16 +1,16 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import { getDatabase, ref, push } from "firebase/database";
-import { firebaseConfig } from "../firebaseConfig.js";
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../firebase.js';
+import { getDatabase,} from "firebase/database";
+ import { firebaseConfig } from "../firebaseConfig.js";
+// import { collection, addDoc } from 'firebase/firestore';
+// import { db } from '../firebase.js';
 
 async function writeUserData(userToken,email) {
 	// Add additional user data to Firestore (without storing the password)
-	const docRef = await addDoc(collection(db, 'pushUsers'), {
-        email,
-        userToken	
-      });
+	// const docRef = await addDoc(collection(db, 'pushUsers'), {
+    //     email,
+    //     userToken	
+    //   });
 
 }
 

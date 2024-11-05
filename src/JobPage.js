@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Card, Dropdown, Form, Button, Row, Col } from "react-bootstrap";
+import { Card,Container, Dropdown, Modal, Form, Button, Row, Col } from "react-bootstrap";
 import { addDoc, collection } from "firebase/firestore";
 import SideNav from "./SideNav"; // Make sure the path is correct
 import { db } from "./firebase"; // Adjust the import according to your firebase configuration
+import "./blogPage.css"; // Ensure you have a CSS file for styling
 
 const JobPage = () => {
   const [selectedJob, setSelectedJob] = useState({});
@@ -12,6 +13,9 @@ const JobPage = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedQualifications, setSelectedQualifications] = useState([]);
   const [selectedFields, setSelectedFields] = useState([]);
+
+  const handleClosePopup = () => setShowPopup(false);
+
   const fields = [
     "Accounting And Finance",
     "Animal Science",
@@ -121,7 +125,7 @@ const JobPage = () => {
     "Surveying",
     "Urban and regional studies",
   ];
-   const jobLocation = [
+  const jobLocation = [
     "Addis Ababa",
     "Afar",
     "Amhara",
@@ -137,7 +141,6 @@ const JobPage = () => {
     "Other", //Other Must be at Last Because of Add or Edit Screen
   ];
 
- 
   const qualifications = [
     "PHD",
     "MSC",
@@ -211,49 +214,58 @@ const JobPage = () => {
   //   };
 
   const handleSave = async (e) => {
+    console.log("");
+
     e.preventDefault();
+    console.log("Data", e);
+
     if (loading) return;
     setLoading(true);
+
     const jobData = {
-      title: selectedJob.title,
+      title: selectedJob.title || "",
       qualification: selectedQualifications.join(", ") || [], // Join the qualifications array
       field: selectedFields.join(", ") || [], // Join the fields array
-      experience: selectedJob.experience,
-      requiredNumber: selectedJob.requiredNumber,
-      additionalRequirements: selectedJob.additionalRequirements,
-      company: selectedJob.company,
-      salary: selectedJob.salary,
+      experience: selectedJob.experience || "",
+      requiredNumber: selectedJob.requiredNumber || "",
+      additionalRequirements: selectedJob.additionalRequirements || "",
+      company: selectedJob.company || "",
+      salary: selectedJob.salary || "",
       // jobLocation: selectedJob.jobLocation,
       jobLocation: selectedJob.jobLocation
         ? selectedJob.jobLocation.join(", ")
         : "",
-      benefit: selectedJob.benefit,
-      employmentType: selectedJob.employmentType,
-      contractDuration: selectedJob.contractDuration,
-      postDate: selectedJob.postDate,
-      deadlineDate: selectedJob.deadlineDate,
-      department: selectedJob.department,
-      location: selectedJob.location,
-      phoneNumber: selectedJob.phoneNumber,
-      poBox: selectedJob.poBox,
-      email: selectedJob.email,
-      city: selectedJob.city,
+      benefit: selectedJob.benefit || "",
+      employmentType: selectedJob.employmentType || "",
+      contractDuration: selectedJob.contractDuration || "",
+      postDate: selectedJob.postDate || "",
+      deadlineDate: selectedJob.deadlineDate || "",
+      department: selectedJob.department || "",
+      location: selectedJob.location || "",
+      phoneNumber: selectedJob.phoneNumber || "",
+      poBox: selectedJob.poBox || "",
+      email: selectedJob.email || "",
+      city: selectedJob.city || "",
       howToApply: selectedJob.howToApply,
       includeReference: selectedJob.includeReference || "",
-      source: selectedJob.source,
-      status: selectedJob.status,
-      jobIcon: jobIconUrl,
+      source: selectedJob.source || "",
+      status: selectedJob.status || "",
+      jobIcon: jobIconUrl || "",
     };
 
     try {
       await addDoc(collection(db, "jobs"), jobData);
+
       setSelectedJob({});
       setJobIconUrl("");
-      setShowPopup({ show: true, message: "Job added successfully!" });
-      setTimeout(() => setShowPopup({ show: false, message: "" }), 3000);
+      console.log("Job added logic triggered!"); // Log to check if this runs
+      setShowPopup({ show: true, message: "Job added Successfully!" });
+      setTimeout(() => {
+        setLoading(false);
+        setShowPopup(true); // Show the modal after job is saved
+      }, 15000);
     } catch (error) {
       console.log("Data", jobData);
-
       console.error("Error saving job data:", error);
     } finally {
       setLoading(false);
@@ -261,10 +273,19 @@ const JobPage = () => {
   };
 
   return (
+
+
     <div className="d-flex">
+    {/* Side Navigation */}
+    <div className="sidebar-wrapper">
       <SideNav />
-      <div className="main-content">
-        <Card>
+    </div>
+    
+    {/* Main Content */}
+    <div className="main-content flex-grow-1">
+      <Container className="mt-6">
+
+      <Card>
           <Card.Header className="bg-primary text-white text-center">
             <h3 className="text-center">
               Add New Job
@@ -278,7 +299,7 @@ const JobPage = () => {
                 <Row
                   className="mb-4"
                   style={{
-                    backgroundColor: "#7fccde",
+                    backgroundColor: "#abdfeb",
                     overflow: "auto",
                     padding: "20px",
                     borderRadius: "6px",
@@ -304,6 +325,7 @@ const JobPage = () => {
                         value={selectedJob?.title || ""}
                         onChange={handleInputChange}
                         placeholder="Enter job title"
+                        required // Add this attribute
                       />
                     </Form.Group>
                   </Col>
@@ -316,6 +338,7 @@ const JobPage = () => {
                         name="experience"
                         value={selectedJob?.experience || ""}
                         onChange={handleInputChange}
+                        required
                       >
                         <option value="">Select Experience</option>
                         <option value="0 years">0 years</option>
@@ -327,6 +350,27 @@ const JobPage = () => {
                       </Form.Control>
                     </Form.Group>
                   </Col>
+                  {/* 
+                  <Col md={4}>
+                    <Form.Group controlId="formRequiredNumber">
+                      <Form.Label>Required Number</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="requiredNumber"
+                        value={selectedJob?.requiredNumber || ""}
+                        onChange={(e) => handleInputChange(e)}
+                        placeholder="Enter required number"
+                        required
+                      /> */}
+                  {/* Validation message */}
+                  {/* {(!selectedJob?.requiredNumber ||
+                        isNaN(selectedJob.requiredNumber)) && (
+                        <small style={{ color: "red" }}>
+                          Please enter a valid numeric value
+                        </small>
+                      )}
+                    </Form.Group>
+                  </Col> */}
 
                   <Col md={4}>
                     <Form.Group controlId="formRequiredNumber">
@@ -335,9 +379,23 @@ const JobPage = () => {
                         type="number"
                         name="requiredNumber"
                         value={selectedJob?.requiredNumber || ""}
-                        onChange={handleInputChange}
+                        onChange={(e) => {
+                          console.log(
+                            "Required Number Changed:",
+                            e.target.value
+                          ); // Log the value to console
+                          handleInputChange(e);
+                        }}
                         placeholder="Enter required number"
+                        required
                       />
+                      {/* Validation message */}
+                      {/* {(!selectedJob?.requiredNumber ||
+      isNaN(selectedJob.requiredNumber)) && (
+      <small style={{ color: "red" }}>
+        Please enter a valid numeric value
+      </small>
+    )} */}
                     </Form.Group>
                   </Col>
 
@@ -350,6 +408,7 @@ const JobPage = () => {
                         value={selectedJob?.additionalRequirements || ""}
                         onChange={handleInputChange}
                         placeholder="Enter additional requirements"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -363,6 +422,7 @@ const JobPage = () => {
                         value={selectedJob?.department || ""}
                         onChange={handleInputChange}
                         placeholder="Enter department"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -371,10 +431,13 @@ const JobPage = () => {
                     <Form.Group controlId="formEmploymentType">
                       <Form.Label>Employment Type</Form.Label>
                       <Form.Select
+                        as="select"
                         name="employmentType"
                         value={selectedJob?.employmentType || ""}
                         onChange={handleInputChange}
+                        required
                       >
+                        <option value=""></option>
                         <option value="part-time">Permanent</option>
                         <option value="contract">Contract</option>
                       </Form.Select>
@@ -393,7 +456,6 @@ const JobPage = () => {
                             ? selectedQualifications.join(", ")
                             : "Select Qualification"}
                         </Dropdown.Toggle>
-
                         <Dropdown.Menu>
                           {qualifications.map((qualification, index) => (
                             <Form.Check
@@ -401,6 +463,7 @@ const JobPage = () => {
                               type="checkbox"
                               label={qualification}
                               value={qualification}
+                              name="qualification"
                               checked={selectedQualifications.includes(
                                 qualification
                               )}
@@ -409,6 +472,29 @@ const JobPage = () => {
                             />
                           ))}
                         </Dropdown.Menu>
+
+                        {/* <Dropdown.Menu>
+                          {qualifications.map((qualification, index) => (
+                            <Form.Check
+                              key={index}
+                              type="checkbox"
+                              label={qualification}
+                              value={qualification}
+                              name="qualification"
+                              checked={selectedQualifications.includes(
+                                qualification
+                              )}
+                              onChange={handleCheckboxChange}
+                              onClick={(e) => e.stopPropagation()}
+                              required
+                            />
+                          ))}
+                        </Dropdown.Menu> */}
+                        {selectedQualifications.length === 0 && (
+                          <small style={{ color: "red" }}>
+                            Please select at least one field.
+                          </small>
+                        )}
                       </Dropdown>
                     </Form.Group>
                   </Col>
@@ -417,16 +503,19 @@ const JobPage = () => {
                     {/* Adjusted column sizes */}
                     {/* Added overflow handling */}
                     <Form.Group controlId="formField">
-                      <Form.Label>Field</Form.Label>
-
+                      <Form.Label>
+                        Field <span style={{ color: "red" }}>*</span>
+                      </Form.Label>
                       <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        <Dropdown.Toggle variant="danger" id="dropdown-basic">
                           {selectedFields.length > 0
                             ? selectedFields.join(", ")
                             : "Select Fields"}
                         </Dropdown.Toggle>
 
-                        <Dropdown.Menu>
+                        <Dropdown.Menu
+                          style={{ maxHeight: "200px", overflowY: "auto" }}
+                        >
                           {fields.map((field, index) => (
                             <Form.Check
                               key={index}
@@ -440,18 +529,16 @@ const JobPage = () => {
                           ))}
                         </Dropdown.Menu>
                       </Dropdown>
+
+                      {/* Validation message */}
+                      {selectedFields.length === 0 && (
+                        <small style={{ color: "red" }}>
+                          Please select at least one field.
+                        </small>
+                      )}
                     </Form.Group>
                   </Col>
-                </Row>
-                {/* Company, Salary, and Job Location */}
-                <Row
-                  className="mb-4"
-                  style={{
-                    backgroundColor: "#7fccde",
-                    padding: "20px",
-                    borderRadius: "6px",
-                  }}
-                >
+
                   <Col
                     md={12}
                     className="mb-3"
@@ -473,6 +560,7 @@ const JobPage = () => {
                         value={selectedJob?.company || ""}
                         onChange={handleInputChange}
                         placeholder="Enter company name"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -485,6 +573,7 @@ const JobPage = () => {
                         value={selectedJob?.salary || ""}
                         onChange={handleInputChange}
                         placeholder="Enter salary"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -496,7 +585,9 @@ const JobPage = () => {
                         name="salaryType"
                         value={selectedJob?.salaryType || ""}
                         onChange={handleInputChange}
+                        required
                       >
+                        <option value=""></option>
                         <option value="Negotiable">Negotiable</option>
                         <option value="hourly">Attractive</option>
                         <option value="monthly">Per company Scale</option>
@@ -513,6 +604,7 @@ const JobPage = () => {
                         value={selectedJob?.benefit || ""}
                         onChange={handleInputChange}
                         placeholder="Enter benefit"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -526,6 +618,7 @@ const JobPage = () => {
                         value={selectedJob?.contractDuration || ""}
                         onChange={handleInputChange}
                         placeholder="Enter contract duration"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -549,7 +642,7 @@ const JobPage = () => {
                         <Dropdown.Toggle variant="danger" id="dropdown-basic">
                           {selectedJob?.jobLocation &&
                           selectedJob.jobLocation.length > 0
-                            ? selectedJob.jobLocation.join(", ") // Use jobLocation from selectedJob
+                            ? selectedJob.jobLocation.join(", ") // Show selected job locations
                             : "Select Job Location"}
                         </Dropdown.Toggle>
 
@@ -563,25 +656,24 @@ const JobPage = () => {
                               checked={
                                 selectedJob?.jobLocation?.includes(location) ||
                                 false
-                              } // Check if this location is selected
-                              onChange={handleJobLocationsCheckboxChange} // Ensure this function handles the checkbox state
-                              onClick={(e) => e.stopPropagation()} // Prevent closing the dropdown on checkbox click
+                              } // Check if location is selected
+                              onChange={handleJobLocationsCheckboxChange} // Handle checkbox state change
+                              onClick={(e) => e.stopPropagation()} // Prevent closing the dropdown on click
                             />
                           ))}
                         </Dropdown.Menu>
                       </Dropdown>
+
+                      {/* Validation message for job location */}
+                      {(!selectedJob?.jobLocation ||
+                        selectedJob.jobLocation.length === 0) && (
+                        <small style={{ color: "red" }}>
+                          Please select at least one job location.
+                        </small>
+                      )}
                     </Form.Group>
                   </Col>
-                </Row>
-                {/* Post Date, Deadline Date, and Department */}
-                <Row
-                  className="mb-4"
-                  style={{
-                    backgroundColor: "#7fccde",
-                    padding: "20px",
-                    borderRadius: "6px",
-                  }}
-                >
+
                   <Col
                     md={12}
                     className="mb-3"
@@ -600,6 +692,7 @@ const JobPage = () => {
                         name="postDate"
                         value={selectedJob?.postDate || ""}
                         onChange={handleInputChange}
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -611,20 +704,11 @@ const JobPage = () => {
                         name="deadlineDate"
                         value={selectedJob?.deadlineDate || ""}
                         onChange={handleInputChange}
+                        required
                       />
                     </Form.Group>
                   </Col>
-                </Row>
-                {/* Location, Phone Number, and P.O. Box */}
 
-                <Row
-                  className="mb-4"
-                  style={{
-                    backgroundColor: "#7fccde",
-                    padding: "20px",
-                    borderRadius: "6px",
-                  }}
-                >
                   <Col
                     md={12}
                     className="mb-3"
@@ -646,6 +730,7 @@ const JobPage = () => {
                         value={selectedJob?.email || ""}
                         onChange={handleInputChange}
                         placeholder="Enter email"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -659,6 +744,7 @@ const JobPage = () => {
                         value={selectedJob?.phoneNumber || ""}
                         onChange={handleInputChange}
                         placeholder="Enter phone number"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -671,6 +757,7 @@ const JobPage = () => {
                         value={selectedJob?.poBox || ""}
                         onChange={handleInputChange}
                         placeholder="Enter P.O. Box"
+                        required
                       />
                     </Form.Group>
                   </Col>
@@ -682,6 +769,7 @@ const JobPage = () => {
                         name="city"
                         value={selectedJob?.city || ""}
                         onChange={handleInputChange}
+                        required
                       >
                         {/* Default option */}
                         {jobLocation.map((city, index) => (
@@ -722,7 +810,9 @@ const JobPage = () => {
                         name="howToApply"
                         value={selectedJob?.howToApply || ""}
                         onChange={handleInputChange}
+                        required
                       >
+                         <option value=""></option>
                         <option value="in-person">In-Person</option>
                         <option value="email"> Through Email</option>
                         <option value="online-portal">Through Mail</option>
@@ -737,7 +827,9 @@ const JobPage = () => {
                         name="source"
                         value={selectedJob?.source || ""}
                         onChange={handleInputChange}
+                        required
                       >
+                         <option value=""></option>
                         <option value="job-board">Reporter</option>
                         <option value="referral">Addis Zemen</option>
                         <option value="company-website">Yegara jobs</option>
@@ -750,9 +842,11 @@ const JobPage = () => {
                       <Form.Label>Include Reference</Form.Label>
                       <Form.Select
                         name="includeReference"
-                        value={selectedJob?.includeReference || "No"}
+                        value={selectedJob?.includeReference || ""}
                         onChange={handleInputChange}
+                        required
                       >
+                         <option value=""></option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                       </Form.Select>
@@ -766,6 +860,7 @@ const JobPage = () => {
                         name="status" // Ensure this matches selectedJob key
                         value={selectedJob?.status || ""}
                         onChange={handleInputChange}
+                        required
                       >
                         <option value="">Select Status</option>{" "}
                         {/* Optional: add a default option */}
@@ -779,14 +874,60 @@ const JobPage = () => {
                   {loading ? "Saving..." : "Save Job"}
                 </Button>
               </Form>
-              {showPopup.show && (
+              {/* {showPopup.show && (
                 <div className="popup-message">{showPopup.message}</div>
-              )}
+              )} */}
+              <Modal show={showPopup.show} onHide={handleClosePopup} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Success</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{ fontSize: "1.5rem", textAlign: "center" }}>
+                  {showPopup.message}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="primary" onClick={handleClosePopup}>
+                    OK
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+              {/* {showPopup.show && (
+                <div
+                style={{
+                  position: "fixed",
+                  top: "50%",
+                  left: "50%",
+                  
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "#28a745",
+                  color: "white",
+                  width: "350px", // Set width to 350px
+                  height: "350px", // Set height to 350px
+                  display: "flex", // Use flexbox to center content
+                  alignItems: "center", // Center content vertically
+                  justifyContent: "center", // Center content horizontally
+                  padding: "10px", // Adjust padding if needed
+                  borderRadius: "5px",
+                  fontSize: "5.5rem", // Increase font size to 1.5rem (adjust as needed)
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                  zIndex: 9999,  
+                  }}
+                >
+                  {showPopup.message}
+                </div>
+              )} */}
             </div>
           </Card.Body>
         </Card>
-      </div>
+
+
+      </Container>
     </div>
+  </div>
+
+
+
+
+
   );
 };
 

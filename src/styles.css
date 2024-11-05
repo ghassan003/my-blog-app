@@ -1,14 +1,13 @@
-/* src/styles.css */
-#sidebar-wrapper {
+.sidebar-wrapper {
   width: 250px;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
   background-color: #f8f9fa;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 100;
+  padding-top: 0; /* Removes the top padding */
+  margin-top: 0; /* Ensures no margin at the top */
 }
 
 .sidebar-heading {
@@ -19,6 +18,9 @@
   color: white;
   text-align: center;
   border-bottom: 1px solid #ddd;
+
+  padding-top: 0; /* Removes top padding if any */
+  margin-top: 0; /* Ensures no margin at the top */
 }
 
 .list-group-item {

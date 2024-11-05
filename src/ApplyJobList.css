@@ -1,0 +1,68 @@
+/* ApplyJobList.css */
+
+/* Basic styling for the component wrapper */
+.apply-job-list {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header styling */
+  .apply-job-list h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Table styling */
+  .apply-job-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .apply-job-list th,
+  .apply-job-list td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #dee2e6;
+  }
+  
+  .apply-job-list th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .apply-job-list tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Button styling */
+  .apply-job-list .btn {
+    margin-right: 8px;
+  }
+  
+  /* Modal styling */
+  .apply-job-list .modal-header {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .apply-job-list .modal-footer .btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  /* Add responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .apply-job-list h3 {
+      font-size: 1.2rem;
+    }
+  
+    .apply-job-list th,
+    .apply-job-list td {
+      padding: 8px;
+    }
+  }
+  

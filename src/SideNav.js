@@ -228,196 +228,466 @@
 // };
 
 // export default SideNav;
+// /// 20 Oct 2024
+// import React, { useState, useEffect } from "react";
+// import { Link, useLocation, useNavigate } from "react-router-dom";
+// import "./SideNav.css"; // Ensure CSS is imported
+// import "bootstrap-icons/font/bootstrap-icons.css";
+
+// const SideNav = () => {
+//   const [isOpen, setIsOpen] = useState(true);
+//   const [role, setRole] = useState(null); // State to store the user's role
+//   const [email, setEmail] = useState(null);
+
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   // Fetch the role from localStorage when the component mounts
+//   useEffect(() => {
+//     const userData = localStorage.getItem("user");
+//     console.log("localStorage content in SideNav:", localStorage);
+//     if (userData) {
+//       const parsedData = JSON.parse(userData);
+//       console.log("Parsed user data:", parsedData);
+//       setRole(parsedData.role); // Set role from localStorage
+//       setEmail(parsedData.username); // Set role from localStorage
+//     } else {
+//       console.log("No user data found in localStorage");
+//     }
+//   }, []);
+
+//   const toggleSidebar = () => {
+//     setIsOpen(!isOpen);
+//   };
+
+//   const handleLogout = () => {
+//     // Clear the user session
+//     localStorage.removeItem("user");
+//     localStorage.clear();
+//     navigate("/");
+//   };
+
+//   return (
+//     <>
+//       <button className="btn btn-toggle d-md-none" onClick={toggleSidebar}>
+//         {isOpen ? "Close" : "Open"}
+//       </button>
+//       <div
+//         className={`bg-light border-end ${isOpen ? "show" : ""}`}
+//         id="sidebar-wrapper"
+//       >
+//         <div className="sidebar-heading">Awolia Alumuni</div>
+//         <div className="list-group list-group-flush">
+//           {/* Dashboard and Member Management are only shown to 'admin' */}
+//           {role === "Admin" && (
+//             <>
+//               <Link
+//                 to="/dashboard"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/dashboard" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-house me-2"></i>
+//                 Dashboard
+//               </Link>
+
+//               <Link
+//                 to="/user"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/user" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-person me-2"></i>
+//                 Member Management
+//               </Link>
+
+//               <Link
+//                 to="/user-management"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/user-management" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-people me-2"></i>
+//                 User Management
+//               </Link>
+
+//               <Link
+//                 to="/jobs"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/jobs" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-briefcase me-2"></i>
+//                 Add New Job
+//               </Link>
+
+
+//               {/* Add the Job Management button here */}
+//               <Link
+//                 to="/job-management"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/job-management" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-briefcase me-2"></i>
+//                 Job Management
+//               </Link>
+
+//               <Link
+//                 to="/blog"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/blog" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-file-earmark-text me-2"></i>
+//                 View All Posts
+//               </Link>
+
+//               <Link
+//                 to="/setup"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/setup" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-gear me-2"></i>
+//                 Setup
+//               </Link>
+
+//               <Link
+//                 to="/payment-confirmation"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/payment-confirmation" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-credit-card me-2"></i>
+//                 View Payment Confirmation
+//               </Link>
+//             </>
+//           )}
+
+//           {/* Payment Confirmation and Setup are only shown to 'admin' */}
+//           {role === "Payment Checker" && (
+//             <>
+//               <Link
+//                 to="/payment-confirmation"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/payment-confirmation" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-credit-card me-2"></i>
+//                 View Payment Confirmation
+//               </Link>
+//             </>
+//           )}
+
+//           {role === "Blog Writer" && (
+//             <>
+//               <Link
+//                 to="/blog"
+//                 className={`list-group-item list-group-item-action ${
+//                   location.pathname === "/blog" ? "active" : ""
+//                 }`}
+//               >
+//                 <i className="bi bi-file-earmark-text me-2"></i>
+//                 View All Posts
+//               </Link>
+//             </>
+//           )}
+
+//           {/* <Link
+//             to="/push-notfication"
+//             className={`list-group-item list-group-item-action ${
+//               location.pathname === "/push-notfication" ? "active" : ""
+//             }`}
+//           >
+//             <i className="bi bi-file-earmark-text me-2"></i>
+//             Push Notfication
+//           </Link> */}
+
+//           {/* Logout Button */}
+//           <button
+//             className="list-group-item list-group-item-action"
+//             onClick={handleLogout}
+//           >
+//             <i className="bi bi-box-arrow-right me-2"></i>
+//             Logout
+//           </button>
+//         </div>
+//         <div style={{ position: "fixed", bottom: 0, width: "100%" }}>
+//           <p style={{ textAlign: "center", fontWeight: "bold" }}>{email}</p>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default SideNav;
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { Link, useLocation, useNavigate } from "react-router-dom";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap-icons/font/bootstrap-icons.css";
+
+//  import "./SideNav.css"; // Ensure CSS is imported
+
+
+// const SideNav = () => {
+//   const [isOpen, setIsOpen] = useState(false); // Initially closed for small screens
+//   const [role, setRole] = useState(null);
+//   const [email, setEmail] = useState(null);
+
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const userData = localStorage.getItem("user");
+//     if (userData) {
+//       const parsedData = JSON.parse(userData);
+//       setRole(parsedData.role);
+//       setEmail(parsedData.username);
+//     }
+//   }, []);
+
+//   const toggleSidebar = () => {
+//     setIsOpen(!isOpen);
+//   };
+
+//   const handleLogout = () => {
+//     localStorage.clear();
+//     navigate("/");
+//   };
+
+//   return (
+//     <div className="d-flex flex-column h-100">
+//       {/* Toggle button for mobile view */}
+//       <button className="btn btn-primary d-md-none m-2" onClick={toggleSidebar}>
+//         <i className={`bi ${isOpen ? "bi-x-lg" : "bi-list"}`}></i>
+//       </button>
+
+//       {/* Sidebar */}
+//       <div className={`bg-light border-end d-md-block ${isOpen ? "" : "d-none d-md-block"}`} style={{ minWidth: "250px" }}>
+//         <div className="sidebar-heading p-3 bg-primary text-white text-center">
+//           My Blog
+//         </div>
+        
+//         <div className="list-group list-group-flush">
+//           {role === "Admin" && (
+//             <>
+//               <Link to="/dashboard" className={`list-group-item list-group-item-action ${location.pathname === "/dashboard" ? "active" : ""}`}>
+//                 <i className="bi bi-house me-2"></i> Dashboard
+//               </Link>
+//               <Link to="/user" className={`list-group-item list-group-item-action ${location.pathname === "/user" ? "active" : ""}`}>
+//                 <i className="bi bi-person me-2"></i> Member Management
+//               </Link>
+//               <Link to="/user-management" className={`list-group-item list-group-item-action ${location.pathname === "/user-management" ? "active" : ""}`}>
+//                 <i className="bi bi-people me-2"></i> User Management
+//               </Link>
+//               <Link to="/jobs" className={`list-group-item list-group-item-action ${location.pathname === "/jobs" ? "active" : ""}`}>
+//                 <i className="bi bi-briefcase me-2"></i> Add New Job
+//               </Link>
+//               <Link to="/job-management" className={`list-group-item list-group-item-action ${location.pathname === "/job-management" ? "active" : ""}`}>
+//                 <i className="bi bi-briefcase me-2"></i> Job Management
+//               </Link>
+//               <Link to="/blog" className={`list-group-item list-group-item-action ${location.pathname === "/blog" ? "active" : ""}`}>
+//                 <i className="bi bi-file-earmark-text me-2"></i> View All Posts
+//               </Link>
+//               <Link to="/setup" className={`list-group-item list-group-item-action ${location.pathname === "/setup" ? "active" : ""}`}>
+//                 <i className="bi bi-gear me-2"></i> Setup
+//               </Link>
+//               <Link to="/payment-confirmation" className={`list-group-item list-group-item-action ${location.pathname === "/payment-confirmation" ? "active" : ""}`}>
+//                 <i className="bi bi-credit-card me-2"></i> View Payment Confirmation
+//               </Link>
+//             </>
+//           )}
+          
+//           {role === "Payment Checker" && (
+//             <Link to="/payment-confirmation" className={`list-group-item list-group-item-action ${location.pathname === "/payment-confirmation" ? "active" : ""}`}>
+//               <i className="bi bi-credit-card me-2"></i> View Payment Confirmation
+//             </Link>
+//           )}
+          
+//           {role === "Blog Writer" && (
+//             <Link to="/blog" className={`list-group-item list-group-item-action ${location.pathname === "/blog" ? "active" : ""}`}>
+//               <i className="bi bi-file-earmark-text me-2"></i> View All Posts
+//             </Link>
+//           )}
+          
+//           <button className="list-group-item list-group-item-action" onClick={handleLogout}>
+//             <i className="bi bi-box-arrow-right me-2"></i> Logout
+//           </button>
+//         </div>
+        
+//         <div className="text-center mt-auto mb-3" style={{ fontWeight: "bold" }}>
+//           {email}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SideNav;
+
+
+
 
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./SideNav.css"; // Ensure CSS is imported
+import "./SideNav.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const SideNav = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [role, setRole] = useState(null); // State to store the user's role
+  const [isOpen, setIsOpen] = useState(window.innerWidth > 768);
+  const [role, setRole] = useState(null);
   const [email, setEmail] = useState(null);
-
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Fetch the role from localStorage when the component mounts
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsOpen(window.innerWidth > 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Fetch user data
   useEffect(() => {
     const userData = localStorage.getItem("user");
-    console.log("localStorage content in SideNav:", localStorage);
     if (userData) {
       const parsedData = JSON.parse(userData);
-      console.log("Parsed user data:", parsedData);
-      setRole(parsedData.role); // Set role from localStorage
-      setEmail(parsedData.username); // Set role from localStorage
-    } else {
-      console.log("No user data found in localStorage");
+      setRole(parsedData.role);
+      setEmail(parsedData.username);
     }
   }, []);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
   const handleLogout = () => {
-    // Clear the user session
-    localStorage.removeItem("user");
     localStorage.clear();
     navigate("/");
   };
 
   return (
-    <>
-      <button className="btn btn-toggle d-md-none" onClick={toggleSidebar}>
-        {isOpen ? "Close" : "Open"}
-      </button>
-      <div
-        className={`bg-light border-end ${isOpen ? "show" : ""}`}
-        id="sidebar-wrapper"
+    <div className="sidenav-container">
+      <button 
+        className="toggle-button"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle Navigation"
       >
-        <div className="sidebar-heading">My Blog</div>
-        <div className="list-group list-group-flush">
-          {/* Dashboard and Member Management are only shown to 'admin' */}
+        <i className={`bi ${isOpen ? 'bi-x-lg' : 'bi-list'}`}></i>
+      </button>
+
+      <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+        <div className="sidebar-header">Awolia Alumni</div>
+        
+        <nav className="nav-links">
           {role === "Admin" && (
             <>
               <Link
                 to="/dashboard"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/dashboard" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/dashboard" ? "active" : ""}`}
               >
                 <i className="bi bi-house me-2"></i>
-                Dashboard
+                <span>Dashboard</span>
               </Link>
 
               <Link
+                to="/apply-job"
+                className={`nav-link ${location.pathname === "/apply-job" ? "active" : ""}`}
+              >
+                <i className="bi bi-envelope me-2"></i>
+                <span>Apply Job</span>
+              </Link>
+
+
+              <Link
                 to="/user"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/user" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/user" ? "active" : ""}`}
               >
                 <i className="bi bi-person me-2"></i>
-                Member Management
+                <span>Member Management</span>
               </Link>
 
               <Link
                 to="/user-management"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/user-management" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/user-management" ? "active" : ""}`}
               >
                 <i className="bi bi-people me-2"></i>
-                User Management
+                <span>User Management</span>
               </Link>
 
               <Link
                 to="/jobs"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/jobs" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/jobs" ? "active" : ""}`}
               >
                 <i className="bi bi-briefcase me-2"></i>
-                Add New Job
+                <span>Add New Job</span>
               </Link>
 
-
-              {/* Add the Job Management button here */}
               <Link
                 to="/job-management"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/job-management" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/job-management" ? "active" : ""}`}
               >
                 <i className="bi bi-briefcase me-2"></i>
-                Job Management
+                <span>Job Management</span>
               </Link>
 
               <Link
                 to="/blog"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/blog" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/blog" ? "active" : ""}`}
               >
                 <i className="bi bi-file-earmark-text me-2"></i>
-                View All Posts
+                <span>View All Posts</span>
               </Link>
 
               <Link
                 to="/setup"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/setup" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/setup" ? "active" : ""}`}
               >
                 <i className="bi bi-gear me-2"></i>
-                Setup
+                <span>Setup</span>
               </Link>
 
               <Link
                 to="/payment-confirmation"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/payment-confirmation" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/payment-confirmation" ? "active" : ""}`}
               >
                 <i className="bi bi-credit-card me-2"></i>
-                View Payment Confirmation
+                <span>View Payment Confirmation</span>
               </Link>
             </>
           )}
 
-          {/* Payment Confirmation and Setup are only shown to 'admin' */}
           {role === "Payment Checker" && (
-            <>
-              <Link
-                to="/payment-confirmation"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/payment-confirmation" ? "active" : ""
-                }`}
-              >
-                <i className="bi bi-credit-card me-2"></i>
-                View Payment Confirmation
-              </Link>
-            </>
+            <Link
+              to="/payment-confirmation"
+              className={`nav-link ${location.pathname === "/payment-confirmation" ? "active" : ""}`}
+            >
+              <i className="bi bi-credit-card me-2"></i>
+              <span>View Payment Confirmation</span>
+            </Link>
           )}
 
           {role === "Blog Writer" && (
-            <>
-              <Link
-                to="/blog"
-                className={`list-group-item list-group-item-action ${
-                  location.pathname === "/blog" ? "active" : ""
-                }`}
-              >
-                <i className="bi bi-file-earmark-text me-2"></i>
-                View All Posts
-              </Link>
-            </>
+            <Link
+              to="/blog"
+              className={`nav-link ${location.pathname === "/blog" ? "active" : ""}`}
+            >
+              <i className="bi bi-file-earmark-text me-2"></i>
+              <span>View All Posts</span>
+            </Link>
           )}
 
-          {/* <Link
-            to="/push-notfication"
-            className={`list-group-item list-group-item-action ${
-              location.pathname === "/push-notfication" ? "active" : ""
-            }`}
-          >
-            <i className="bi bi-file-earmark-text me-2"></i>
-            Push Notfication
-          </Link> */}
-
-          {/* Logout Button */}
-          <button
-            className="list-group-item list-group-item-action"
-            onClick={handleLogout}
-          >
+          <button className="nav-link logout-button" onClick={handleLogout}>
             <i className="bi bi-box-arrow-right me-2"></i>
-            Logout
+            <span>Logout</span>
           </button>
-        </div>
-        <div style={{ position: "fixed", bottom: 0, width: "100%" }}>
-          <p style={{ textAlign: "center", fontWeight: "bold" }}>{email}</p>
-        </div>
+        </nav>
+
+        <div className="user-email">{email}</div>
       </div>
-    </>
+    </div>
   );
 };
 

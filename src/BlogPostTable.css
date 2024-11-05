@@ -12,13 +12,18 @@
   text-align: center; /* Center-align text in header cells */
 }
 
+
+
+
+
+
 .table td {
   background-color: #f8f9fa; /* Set the background color for table cells */
 }
 
 /* Add custom color to header cells */
 .table th {
-  background-color: #007bff; /* Header background color */
+  background-color: #2684e9; /* Header background color */
   color: #ffffff; /* Header text color */
 }
 
@@ -41,6 +46,12 @@
 .table .title-column {
   width: 30%; /* Adjust the width as needed */
 }
+
+
+.fixed-width {
+  width: 2%;
+}
+
 
 .table .description-column {
   width: 40%; /* Adjust the width as needed */

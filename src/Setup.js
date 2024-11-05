@@ -6,10 +6,16 @@ import BankDataManager from './BankDataManager'; // Import the BankDataManager c
 
 const Setup = () => {
   return (
+
+
     <div className="d-flex">
-      <SideNav /> {/* Render the SideNav component */}
-      <div className="main-content">
-        <Container className="mt-5">
+      {/* Side Navigation */}
+      <div className="sidebar-wrapper">
+        <SideNav />
+      </div>
+      {/* Main Content */}
+      <div className="main-content flex-grow-1">
+      <Container className="mt-6">
           {/* <h2>Setup</h2> */}
           <Card>
             <Card.Header className="bg-primary text-white text-center">
@@ -19,14 +25,21 @@ const Setup = () => {
               
               </Card.Header>
             <Card.Body>
+            <BankDataManager /> {/* Render the BankDataManager component */}
               <SetupDataManager /> {/* Render the SetupDataManager component */}
          
-              <BankDataManager /> {/* Render the BankDataManager component */}
+            
             </Card.Body>
           </Card>
         </Container>
       </div>
     </div>
+
+
+
+
+
+
   );
 };
 

@@ -132,13 +132,127 @@
 
 
 
+// import React, { useState, useEffect } from 'react';
+// import { collection, getDocs } from 'firebase/firestore';
+// import { db } from './firebase';
+// import './Dashboard.css'; // Import the CSS file for styling
+// import SideNav from './SideNav';
+// import CountdownLoader from './CountdownLoader'; // Import the CountdownLoader component
+// import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+
+// const Dashboard = () => {
+//   const [totalPosts, setTotalPosts] = useState(0);
+//   const [totalUsers, setTotalUsers] = useState(0);
+//   const [paidUsers, setPaidUsers] = useState(0);
+//   const [unpaidUsers, setUnpaidUsers] = useState(0);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       setLoading(true); // Set loading to true before starting data fetch
+//       try {
+//         // Fetch total posts
+//         const postsSnapshot = await getDocs(collection(db, 'blogPosts'));
+//         setTotalPosts(postsSnapshot.size);
+
+//         // Fetch Payments table data
+
+//           // this method is fetchig total Paid user from payments table number of user on dashoard 
+//         const usersSnapshot = await getDocs(collection(db, 'payments'));
+//         const usersList = usersSnapshot.docs.map((doc) => doc.data());
+
+//           // this method is taking total number of user on dashoard 
+//         const TotalAppusersSnapshot = await getDocs(collection(db, 'users'));
+//         const AppusersList = TotalAppusersSnapshot.docs.map((doc) => doc.data());
+
+
+//         setTotalUsers(AppusersList.length);
+
+
+//         const paidCount = usersList.filter(user => user.paymentStatus === 'PAID').length;
+
+//           // these line of code  user for count total user from paid user 
+
+//         const unpaidCount = AppusersList.length - paidCount;
+
+//         setPaidUsers(paidCount);
+//         setUnpaidUsers(unpaidCount);
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//         setError('Failed to load data. Please try again later.');
+//       } finally {
+//         setLoading(false); // Set loading to false after data fetch
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   if (loading) {
+//     return <CountdownLoader />;
+//   }
+
+//   if (error) {
+//     return <div className="alert alert-danger" role="alert">{error}</div>;
+//   }
+
+//   return (
+//     <div className="d-flex">
+//       <SideNav />
+//       <div className="content-wrapper">
+//         <div className="container mt-5">
+//           <div className="row">
+//             {/* Consolidated Card */}
+//             <div className="col-lg-12 mb-4">
+//               <div className="card border-dark">
+//                 <div className="card-header bg-primary text-white">
+//                   <h5 className="card-title mb-0">Dashboard Overview</h5>
+//                 </div>
+//                 <div className="card-body bg-white">
+//                   <div className="row">
+//                     <DashboardCard title="Total Post" value={totalPosts} />
+//                     <DashboardCard title="Total Member" value={totalUsers} />
+//                     <DashboardCard title="Paid Member" value={paidUsers} bgClass="bg-success" />
+//                     <DashboardCard title="Unpaid Member" value={unpaidUsers} bgClass="bg-danger" />
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const DashboardCard = ({ title, value, bgClass = "bg-white" }) => (
+//   <div className="col-lg-3 col-md-6 mb-4">
+//     <div className={`card border-dark ${bgClass}`}>
+//       <div className="card-body">
+//         <h6 className="card-subtitle mb-2 text-muted">{title}</h6>
+//         <p className="card-text">{value}</p>
+//       </div>
+//     </div>
+//   </div>
+// );
+
+// export default Dashboard;
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
-import './Dashboard.css'; // Import the CSS file for styling
+import './Dashboard.css';
 import SideNav from './SideNav';
-import CountdownLoader from './CountdownLoader'; // Import the CountdownLoader component
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import CountdownLoader from './CountdownLoader';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Dashboard = () => {
   const [totalPosts, setTotalPosts] = useState(0);
@@ -147,23 +261,34 @@ const Dashboard = () => {
   const [unpaidUsers, setUnpaidUsers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setIsMobile(window.innerWidth < 768);
+  //   };
+
+  //   window.addEventListener('resize', handleResize);
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Set loading to true before starting data fetch
+      setLoading(true);
       try {
-        // Fetch total posts
         const postsSnapshot = await getDocs(collection(db, 'blogPosts'));
         setTotalPosts(postsSnapshot.size);
 
-        // Fetch users data
-        const usersSnapshot = await getDocs(collection(db, 'users'));
+        const usersSnapshot = await getDocs(collection(db, 'payments'));
         const usersList = usersSnapshot.docs.map((doc) => doc.data());
 
-        setTotalUsers(usersList.length);
+        const totalAppUsersSnapshot = await getDocs(collection(db, 'users'));
+        const appUsersList = totalAppUsersSnapshot.docs.map((doc) => doc.data());
 
-        const paidCount = usersList.filter(user => user.paymentStatus === 'Paid').length;
-        const unpaidCount = usersList.length - paidCount;
+        setTotalUsers(appUsersList.length);
+
+        const paidCount = usersList.filter(user => user.paymentStatus === 'PAID').length;
+        const unpaidCount = appUsersList.length - paidCount;
 
         setPaidUsers(paidCount);
         setUnpaidUsers(unpaidCount);
@@ -171,7 +296,7 @@ const Dashboard = () => {
         console.error('Error fetching data:', error);
         setError('Failed to load data. Please try again later.');
       } finally {
-        setLoading(false); // Set loading to false after data fetch
+        setLoading(false);
       }
     };
 
@@ -183,30 +308,51 @@ const Dashboard = () => {
   }
 
   if (error) {
-    return <div className="alert alert-danger" role="alert">{error}</div>;
+    return <div className="alert alert-danger m-3" role="alert">{error}</div>;
   }
 
   return (
-    <div className="d-flex">
+    <div className="dashboard-container">
       <SideNav />
-      <div className="content-wrapper">
-        <div className="container mt-5">
-          <div className="row">
-            {/* Consolidated Card */}
-            <div className="col-lg-12 mb-4">
-              <div className="card border-dark">
-                <div className="card-header bg-primary text-white">
-                  <h5 className="card-title mb-0">Dashboard Overview</h5>
-                </div>
-                <div className="card-body bg-white">
-                  <div className="row">
-                    <DashboardCard title="Total Member" value={totalPosts} />
-                    <DashboardCard title="Total Member" value={totalUsers} />
-                    <DashboardCard title="Paid Member" value={paidUsers} bgClass="bg-success" />
-                    <DashboardCard title="Unpaid Member" value={unpaidUsers} bgClass="bg-danger" />
-                  </div>
-                </div>
+      <div className="dashboard-content">
+        <div className="container-fluid">
+
+          <div className="row g-3">
+            <div className="col-12">
+              <div className="dashboard-header">
+                <h4 className="mb-0">Dashboard Overview</h4>
               </div>
+            </div>
+
+            <div className="col-12">
+
+              <div className="row g-3">
+                <DashboardCard 
+                  title="Total Posts" 
+                  value={totalPosts}
+                  icon="bi-file-text"
+                  bgColor="bg-primary"
+                />
+                <DashboardCard 
+                  title="Total Members" 
+                  value={totalUsers}
+                  icon="bi-people"
+                  bgColor="bg-info"
+                />
+                <DashboardCard 
+                  title="Paid Members" 
+                  value={paidUsers}
+                  icon="bi-check-circle"
+                  bgColor="bg-success"
+                />
+                <DashboardCard 
+                  title="Unpaid Members" 
+                  value={unpaidUsers}
+                  icon="bi-exclamation-circle"
+                  bgColor="bg-danger"
+                />
+              </div>
+              
             </div>
           </div>
         </div>
@@ -215,18 +361,18 @@ const Dashboard = () => {
   );
 };
 
-const DashboardCard = ({ title, value, bgClass = "bg-white" }) => (
-  <div className="col-lg-3 col-md-6 mb-4">
-    <div className={`card border-dark ${bgClass}`}>
-      <div className="card-body">
-        <h6 className="card-subtitle mb-2 text-muted">{title}</h6>
-        <p className="card-text">{value}</p>
+const DashboardCard = ({ title, value, icon, bgColor }) => (
+  <div className="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+    <div className={`dashboard-card ${bgColor}`}>
+      <div className="card-icon">
+        <i className={`bi ${icon}`}></i>
+      </div>
+      <div className="card-content">
+        <h6>{title}</h6>
+        <h2>{value}</h2>
       </div>
     </div>
   </div>
 );
 
 export default Dashboard;
-
-
-
