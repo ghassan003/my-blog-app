@@ -57,7 +57,7 @@ const requestNotificationPermission = async (email) => {
 			alert("Permission not granted for notifications.");
 		}
 	} catch (error) {
-		alert("An error occurred, please refresh the app. ");
+		// alert("An error occurred, please refresh the app. ");
 	}
 };
 

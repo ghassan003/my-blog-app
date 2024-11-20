@@ -1,0 +1,34 @@
+.d-flex {
+    display: flex;
+  }
+  
+  .sidebar-wrapper {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #f8f9fa;
+    z-index: 100;
+    padding-top: 0; /* Removes the top padding */
+    margin-top: 0; /* Ensures no margin at the top */
+  }
+  
+  .main-content {
+    margin-left: 100px; /* Same as sidebar width to align content */
+    padding: 20px;
+    flex-grow: 1;
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar-wrapper {
+      width: 200px; /* Adjust sidebar width for smaller screens */
+      position: relative;
+      height: auto;
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 10px;
+    }
+  }
+  

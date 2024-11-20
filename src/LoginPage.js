@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
@@ -13,7 +13,8 @@ import {
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "./firebase";
-import requestNotificationPermission from '../src/firebase/firebase.js'
+
+// import requestNotificationPermission from '../src/firebase/firebase.js'
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,21 +22,22 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/firebase-messaging-sw.js")
-        .then((registration) => {
-          console.log(
-            "Service Worker registered with scope:",
-            registration.scope
-          );
-        })
-        .catch((error) => {
-          console.log("Service Worker registration failed:", error);
-        });
-    }
-  },[])
+  // useEffect(()=>{
+  //   if ("serviceWorker" in navigator) {
+  //     navigator.serviceWorker
+  //       .register("/firebase-messaging-sw.js")
+  //       .then((registration) => {
+  //         console.log(
+  //           "Service Worker registered with scope:",
+  //           registration.scope
+  //         );
+  //       })
+  //       .catch((error) => {
+  //         console.log("Service Worker registration failed:", error);
+  //       });
+  //   }
+  // },[])
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -83,13 +85,13 @@ const LoginPage = () => {
         // Redirect to dashboard
         // useEffect(() => {
      
-        requestNotificationPermission(user.email);
+        // requestNotificationPermission(user.email);
         navigate("/dashboard");
 
         // }, []);
       } else {
         console.error("No user data found for UID:", userUID);
-        setError("User data not found in the database");
+        setError("Invalid User");
       }
     } catch (error) {
       console.error("Login failed:", error);

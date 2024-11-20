@@ -1,0 +1,12 @@
+.set-data-container {
+    margin: 20px;
+  }
+  
+  .set-data-container .form-control {
+    margin-bottom: 10px;
+  }
+  
+  .set-data-container .btn {
+    margin-top: 10px;
+  }
+  
